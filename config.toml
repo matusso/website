@@ -1,0 +1,62 @@
+baseURL = "/"
+languageCode = "en-us"
+title = ".burso"
+theme = "terminal"
+languageName = "English"
+subtitle = "A simple, retro theme for Hugo"
+keywords = ""
+copyright = ""
+menuMore = "Show more"
+readMore = "Read more"
+readOtherPosts = "Read other posts"
+staticDir = ["static"]
+
+[params.logo]
+  logoText = "0x90"
+  logoHomeLink = "/"
+
+[menu]
+#  [[menu.main]]
+#    name = "blog"
+#    url = "https://medium.com/@burso"
+#    weight = -110
+#
+#  [[menu.main]]
+#    name = "ctf"
+#    post = "<span class='alert'>CTF!</span>"
+#    url = "https://tryhackme.com/p/burso"
+#    weight = -100
+#
+#  [[menu.main]]
+#    name = "notes"
+#    url = "/notes/fix-helm-deployment"
+#    weight = -90
+#
+[privacy]
+  [privacy.disqus]
+    disable = true
+  [privacy.googleAnalytics]
+    disable = true
+  [privacy.instagram]
+    disable = true
+  [privacy.vimeo]
+    disable = true
+  [privacy.youtube]
+    disable = true
+
+[params]
+  # dir name of your blog content (default is `content/posts`)
+  contentTypeName = "posts"
+  # ["orange", "blue", "red", "green", "pink"]
+  themeColor = "green"
+  # if you set this to 0, only submenu trigger will be visible
+  showMenuItems = 4
+  # show selector to switch language
+  showLanguageSelector = false
+  # set theme to full screen width
+  fullWidthTheme = false
+  # center theme with default width
+  centerTheme = true
+  # set a custom favicon (default is a `themeColor` square)
+  favicon = "favicon.jpg"
+
