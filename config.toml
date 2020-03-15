@@ -10,6 +10,7 @@ menuMore = "Show more"
 readMore = "Read more"
 readOtherPosts = "Read other posts"
 staticDir = ["static"]
+publishDir = "docs"
 
 [params.logo]
   logoText = "0x90"

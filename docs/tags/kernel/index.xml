@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kernel on .burso</title>
+    <link>/tags/kernel/</link>
+    <description>Recent content in kernel on .burso</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 29 Apr 2016 20:58:10 +0100</lastBuildDate>
+    
+	<atom:link href="/tags/kernel/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>.grsec patch size_overflow</title>
+      <link>/posts/grsec-patch-size-overflow/</link>
+      <pubDate>Fri, 29 Apr 2016 20:58:10 +0100</pubDate>
+      
+      <guid>/posts/grsec-patch-size-overflow/</guid>
+      <description>I think you sure know linux kernel patches from grsecurity. In follow tweet you can read about size overflow in patch from grsec.
+This is the fail in the @grsecurity patch. How did this pass review? ... a security patchset has code review, right? pic.twitter.com/gincZXdQrU
+&amp;mdash; Hector Martin (@marcan42) April 25, 2016  So what is the problem in this patch? When you change int (signed value) to size_t (unsigned value), you have to be sure you are saving unsigned value.</description>
+    </item>
+    
+  </channel>
+</rss>

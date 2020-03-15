@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hacking on .burso</title>
+    <link>/tags/hacking/</link>
+    <description>Recent content in hacking on .burso</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Jan 2020 12:24:40 +0100</lastBuildDate>
+    
+	<atom:link href="/tags/hacking/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How find a vulnerable server on the internet?</title>
+      <link>/posts/citrix-vulnerability/</link>
+      <pubDate>Fri, 24 Jan 2020 12:24:40 +0100</pubDate>
+      
+      <guid>/posts/citrix-vulnerability/</guid>
+      <description>NOTICE: Educational purposes only!
+Hi, I want to show you how easy it is to find a vulnerable server on the internet. Okey guys, so now, firstly we need to have some TOR client for anonymity ;) Before we begin, look at the following tools
+ tor nyx proxychains-ng shodan curl nmap  $ tor &amp;amp; $ nyx -i 127.0.0.1:9052 Then we can test, if the tor is working correctly with proxychains</description>
+    </item>
+    
+    <item>
+      <title>OSCE Prologue or How to get Secret key to CTP?</title>
+      <link>/posts/osce-prologue/</link>
+      <pubDate>Wed, 22 Jan 2020 14:32:59 +0100</pubDate>
+      
+      <guid>/posts/osce-prologue/</guid>
+      <description>If you want to register to CTP, you will need something they call Registration Code and Secret Key. So firstly, there is interesting file /fc4.js
+function fc4me(srvstr) { if(!document.pleazfc4me.email.value || !document.pleazfc4me.securitystring.value) { alert(&amp;#34;Please fill in all the required fields!&amp;#34;); return false; } if(document.pleazfc4me.securitystring.value != hexMD5(&amp;#34;\x74\x72\x79\x68\x61\x72\x64\x65\x72&amp;#34;+srvstr)) { alert(&amp;#34;Registration Authorization String not accepted! Try Harder! &amp;#34;); return false; } else { document.pleazfc4me.submit(); } } So all you need to do is setup some js variables in browser console and call fc4me(srvstr)</description>
+    </item>
+    
+    <item>
+      <title>Notes from #34c3</title>
+      <link>/posts/34c3-tuwat/</link>
+      <pubDate>Wed, 10 Jan 2018 19:25:41 +0100</pubDate>
+      
+      <guid>/posts/34c3-tuwat/</guid>
+      <description>moongen
+  nmap-vulners is great script for automatically find possible issues of services on opened ports. It&amp;rsquo;s partly replacing Nessus, but it&amp;rsquo;s open source. It is using vulners database for finding possible vulnerabilities. Vulners is also great tool, because it allows check all your installed packages. You can find it in audit section.
+  taskwarrior
+  shamir secret sharing
+  restic
+  khal</description>
+    </item>
+    
+  </channel>
+</rss>

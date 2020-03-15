@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>conference on .burso</title>
+    <link>/tags/conference/</link>
+    <description>Recent content in conference on .burso</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 10 Jan 2018 19:25:41 +0100</lastBuildDate>
+    
+	<atom:link href="/tags/conference/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Notes from #34c3</title>
+      <link>/posts/34c3-tuwat/</link>
+      <pubDate>Wed, 10 Jan 2018 19:25:41 +0100</pubDate>
+      
+      <guid>/posts/34c3-tuwat/</guid>
+      <description>moongen
+  nmap-vulners is great script for automatically find possible issues of services on opened ports. It&amp;rsquo;s partly replacing Nessus, but it&amp;rsquo;s open source. It is using vulners database for finding possible vulnerabilities. Vulners is also great tool, because it allows check all your installed packages. You can find it in audit section.
+  taskwarrior
+  shamir secret sharing
+  restic
+  khal</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-02-06T15:33:06+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/ctf/</loc>
+    <lastmod>2020-02-06T15:33:06+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/daily-bugle/</loc>
+    <lastmod>2020-02-06T15:33:06+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/joomla/</loc>
+    <lastmod>2020-02-06T15:33:06+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/</loc>
+    <lastmod>2020-02-06T15:33:06+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/priviledge-escalation/</loc>
+    <lastmod>2020-02-06T15:33:06+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/sqli/</loc>
+    <lastmod>2020-02-06T15:33:06+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-02-06T15:33:06+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/tryhackme/</loc>
+    <lastmod>2020-02-06T15:33:06+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/yum/</loc>
+    <lastmod>2020-02-06T15:33:06+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/citrix/</loc>
+    <lastmod>2020-01-24T12:24:40+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/cve-2019-19781/</loc>
+    <lastmod>2020-01-24T12:24:40+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/hacking/</loc>
+    <lastmod>2020-01-24T12:24:40+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/citrix-vulnerability/</loc>
+    <lastmod>2020-01-24T12:24:40+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/nmap/</loc>
+    <lastmod>2020-01-24T12:24:40+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/shodan/</loc>
+    <lastmod>2020-01-24T12:24:40+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/tor/</loc>
+    <lastmod>2020-01-24T12:24:40+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/offensive-security/</loc>
+    <lastmod>2020-01-22T14:32:59+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/osce-prologue/</loc>
+    <lastmod>2020-01-22T14:32:59+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/ccc/</loc>
+    <lastmod>2018-01-10T19:25:41+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/conference/</loc>
+    <lastmod>2018-01-10T19:25:41+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/34c3-tuwat/</loc>
+    <lastmod>2018-01-10T19:25:41+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/tools/</loc>
+    <lastmod>2018-01-10T19:25:41+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/grsec-patch-size-overflow/</loc>
+    <lastmod>2016-04-29T20:58:10+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/dos/</loc>
+    <lastmod>2016-04-29T20:58:10+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/grsec/</loc>
+    <lastmod>2016-04-29T20:58:10+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/kernel/</loc>
+    <lastmod>2016-04-29T20:58:10+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+  </url>
+  
+</urlset>

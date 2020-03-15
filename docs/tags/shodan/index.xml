@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>shodan on .burso</title>
+    <link>/tags/shodan/</link>
+    <description>Recent content in shodan on .burso</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Jan 2020 12:24:40 +0100</lastBuildDate>
+    
+	<atom:link href="/tags/shodan/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How find a vulnerable server on the internet?</title>
+      <link>/posts/citrix-vulnerability/</link>
+      <pubDate>Fri, 24 Jan 2020 12:24:40 +0100</pubDate>
+      
+      <guid>/posts/citrix-vulnerability/</guid>
+      <description>NOTICE: Educational purposes only!
+Hi, I want to show you how easy it is to find a vulnerable server on the internet. Okey guys, so now, firstly we need to have some TOR client for anonymity ;) Before we begin, look at the following tools
+ tor nyx proxychains-ng shodan curl nmap  $ tor &amp;amp; $ nyx -i 127.0.0.1:9052 Then we can test, if the tor is working correctly with proxychains</description>
+    </item>
+    
+  </channel>
+</rss>

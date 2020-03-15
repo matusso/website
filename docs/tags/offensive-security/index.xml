@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>offensive-security on .burso</title>
+    <link>/tags/offensive-security/</link>
+    <description>Recent content in offensive-security on .burso</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 22 Jan 2020 14:32:59 +0100</lastBuildDate>
+    
+	<atom:link href="/tags/offensive-security/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>OSCE Prologue or How to get Secret key to CTP?</title>
+      <link>/posts/osce-prologue/</link>
+      <pubDate>Wed, 22 Jan 2020 14:32:59 +0100</pubDate>
+      
+      <guid>/posts/osce-prologue/</guid>
+      <description>If you want to register to CTP, you will need something they call Registration Code and Secret Key. So firstly, there is interesting file /fc4.js
+function fc4me(srvstr) { if(!document.pleazfc4me.email.value || !document.pleazfc4me.securitystring.value) { alert(&amp;#34;Please fill in all the required fields!&amp;#34;); return false; } if(document.pleazfc4me.securitystring.value != hexMD5(&amp;#34;\x74\x72\x79\x68\x61\x72\x64\x65\x72&amp;#34;+srvstr)) { alert(&amp;#34;Registration Authorization String not accepted! Try Harder! &amp;#34;); return false; } else { document.pleazfc4me.submit(); } } So all you need to do is setup some js variables in browser console and call fc4me(srvstr)</description>
+    </item>
+    
+  </channel>
+</rss>
