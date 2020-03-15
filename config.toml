@@ -58,5 +58,5 @@ staticDir = ["static"]
   # center theme with default width
   centerTheme = true
   # set a custom favicon (default is a `themeColor` square)
-  favicon = "favicon.jpg"
+  favicon = "img/favicon/favicon.jpg"
 
