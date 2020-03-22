@@ -2,7 +2,7 @@
 title: "Blue"
 date: 2020-02-12T14:35:31+01:00
 draft: true
-tags: ["CTF", "eternalblue", "hashcat", "metasploit", "MS17-010"]
+tags: ["CTF", "eternalblue", "hashcat", "metasploit", "MS17-010", "tryhackme"]
 ---
 
 Hello everyone, today we look at the CTF with [MS17-010](https://docs.microsoft.com/en-us/security-updates/securitybulletins/2017/ms17-010) vulnerability.

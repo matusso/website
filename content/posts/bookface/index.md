@@ -2,7 +2,7 @@
 title: "Bookface"
 date: 2020-02-10T14:50:43+01:00
 draft: true
-tags: ["CTF"]
+tags: ["CTF", "tryhackme"]
 ---
 
 Before we start, read more about following tools & vulnerabilities. It will contains in this CTF
