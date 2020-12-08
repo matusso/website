@@ -1,7 +1,7 @@
 ---
 title: "Inclusion"
 date: 2020-03-16T18:42:36+01:00
-draft: true
+draft: false
 tags: ["ctf", "tryhackme", "LFI", "socat"]
 ---
 
