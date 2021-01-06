@@ -17,7 +17,7 @@
     <title>{{if .IsPage }} {{.Title}} {{else}}{{ template "title" (dict "p1" . "p2" .) }} {{end}}- {{ .Site.Title -}}</title>
     <meta name="description" content="{{ $description }}">
     <link rel="canonical" href="{{ .Permalink }}">
-    <link rel="icon" href="img/favicon.jpg" type="image/gif" sizes="16x16"> 
+    <link rel="icon" href="/img/favicon.jpg" type="image/gif" sizes="16x16"> 
     <meta property="og:title" content="{{ .Title }}">
     <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
     <meta property="og:url" content="{{ .Permalink }}">
