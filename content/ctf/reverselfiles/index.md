@@ -302,8 +302,8 @@ Non-debugging symbols:
 0x00000000004007d4  _fini
 ```
 
-This function is starting on address 0x040057d and finishing on address 0x04006d0,
-so let's find all __cmp__ instructions between these two addresses
+This function is starting on address `0x040057d` and finishing on address `0x04006d0`,
+so let's find all `cmp` instructions between these two addresses
 ```
 $ objdump -D crackme6  | egrep -e "4005|4006" | grep "cmp "
   400597:       3c 31                   cmp    $0x31,%al

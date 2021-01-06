@@ -5,3 +5,6 @@
 	path = public
 	url = git@github.com:matusso/matusso.github.io.git
 	branch = master
+[submodule "themes/the-roots-home"]
+	path = themes/the-roots-home
+	url = git@github.com:rmsubekti/the-roots-home.git
