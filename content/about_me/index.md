@@ -4,8 +4,6 @@
 ***
 security engineer, coder and dark net reconnoitrer
 
-- [posts](/posts)
-
 #### projects
 - [libssllabs](https://github.com/matusso/libssllabs) - c++ library for work with [ssllabs api](https://www.ssllabs.com/projects/ssllabs-apis/index.html)
 - [gsreport](https://github.com/occu-io/gsreport) - G Suite admin report tool
