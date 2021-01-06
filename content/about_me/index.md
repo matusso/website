@@ -1,4 +1,8 @@
-
+---
+title: "aboutme"
+date: 2018-03-02T20:00:00+01:00
+author: burso
+---
 
 ## Matus Bursa
 ***

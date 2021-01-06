@@ -1,7 +1,7 @@
 ---
 title: "Blue"
 date: 2020-02-12T14:35:31+01:00
-draft: true
+draft: false
 tags: ["CTF", "eternalblue", "hashcat", "metasploit", "MS17-010", "tryhackme"]
 ---
 
