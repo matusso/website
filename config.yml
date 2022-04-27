@@ -1,4 +1,4 @@
-baseURL: "https://burso.eu/"
+baseURL: "https://www.burso.eu/"
 title: ".burso | blog about ctf & anything else"
 paginate: 5
 theme: hugo-PaperMod
