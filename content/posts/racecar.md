@@ -10,7 +10,7 @@ Hello hackers, let's solve another CTF from category *easy*. This [challenge](ht
 is about [format string vulnerability](https://web.ecs.syr.edu/~wedu/Teaching/cis643/LectureNotes_New/Format_String.pdf)
 
 First of all I look what type of file is it
-```
+```bash
 % file racecar
 racecar: ELF 32-bit LSB pie executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 3.2.0, BuildID[sha1]=c5631a370f7704c44312f6692e1da56c25c1863c, not stripped
 ```
@@ -23,7 +23,7 @@ There are couple of interesting functions with various name and after little bit
 
 
 As you can see, there is a part where the file *flag.txt* is opened and the content of file is read to memory. Also you can write any message, which is printed then.
-```
+```c
     __format = (char *)malloc(0x171);
     __stream = fopen("flag.txt","r");
     if (__stream == (FILE *)0x0) {
