@@ -162,7 +162,7 @@ Host: localhost:48470
 {"command": "run" , "utilCmdArgs": " -c id" }
 ```
 
-That's all from my side, you can look at python [exploit](https://github.com/horizon3ai/CVE-2022-1388) from [Horizon3Attack team](https://twitter.com/Horizon3Attack).
+That's all from my side, you can look at python [exploit](https://github.com/horizon3ai/CVE-2022-1388) from [Horizon3Attack team](https://twitter.com/Horizon3Attack) or read their [blog: F5 iControl REST vulnerability.](https://www.horizon3.ai/f5-icontrol-rest-endpoint-authentication-bypass-technical-deep-dive/)
 
 ### twitter story
 
