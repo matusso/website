@@ -6,11 +6,11 @@ tags: ["F5", "CVE-2022-1388", "BIG-IP", "REST", "API"]
 categories: ["vulns"]
 ---
 
-Good afternoon for every security researchers. I would like to share my experience to find announced vulnerability by internal F5 security team and write exploit for [CVE-2022-1388](https://support.f5.com/csp/article/K23605346).
+Good afternoon to every security researcher. I would like to share my experience of finding announced vulnerability by internal F5 security team and writing the exploit for [CVE-2022-1388](https://support.f5.com/csp/article/K23605346).
 
-You can read more about this vulnerability on [thehackernews](https://thehackernews.com/2022/05/f5-warns-of-new-critical-big-ip-remote.html) or [helpnetsecurity](https://www.helpnetsecurity.com/2022/05/09/cve-2022-1388-poc-exploitation/). [iControl REST](https://clouddocs.f5.com/api/icontrol-rest/) is API for interaction between scripts and *F5 device* to manage and control that device automatically.  
+You can read more about this vulnerability on [thehackernews](https://thehackernews.com/2022/05/f5-warns-of-new-critical-big-ip-remote.html) or [helpnetsecurity](https://www.helpnetsecurity.com/2022/05/09/cve-2022-1388-poc-exploitation/). [iControl REST](https://clouddocs.f5.com/api/icontrol-rest/) is an API for interaction between scripts and *F5 device*, used to manage and control that device automatically.  
 
-Based on details of *mitigation*, the problem should be somewhere in `Connection: ` header.
+Based on the details of the *mitigation*, the problem should be somewhere in the `Connection: ` header.
 
 ### mitigation
 ```apache
@@ -27,7 +27,7 @@ RequestHeader set connection keep-alive
 
 ### inside the library
 
-If we use `diff` and `strings` commands, we can see which strings was changes/added to library, so I decided to download one from vulnerable version `BIGIP-16.1.0-0.0.19` and one from fixed version `BIGIP-16.1.2.2-0.0.28`
+If we use `diff` and `strings` commands, we can see which strings were changed/added to the library, so I decided to download one from the vulnerable version `BIGIP-16.1.0-0.0.19` and one from the fixed version `BIGIP-16.1.2.2-0.0.28`
 
 ```bash
 $ diff  <(strings mod_auth_pam.so_new ) <(strings mod_auth_pam.so_old)
@@ -42,15 +42,15 @@ $ diff  <(strings mod_auth_pam.so_new ) <(strings mod_auth_pam.so_old)
 
 ### header Connection
 
-So we know that in F5, there is `Jetty` server without authentication on `TCP/8100`, which we can hit for example from `localhost` (F5 device). We also know that there is `Apache` which do the *Authentication* for `Jetty` and also we know we can abuse [hop-by-hop header](https://book.hacktricks.xyz/pentesting-web/abusing-hop-by-hop-headers) there, but we don't know which header we should pass to `Connection` header. Also for more details about hop-by-hop headers you can read [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-13.5.1)
+We know that in F5, there is `Jetty` server without authentication on `TCP/8100`, which we can hit for example from `localhost` (F5 device). We also know that there is `Apache` which does the *Authentication* for `Jetty`. We also know that we can abuse [hop-by-hop header](https://book.hacktricks.xyz/pentesting-web/abusing-hop-by-hop-headers) there, but we don't know which header we should pass to the `Connection` header. For more details about hop-by-hop headers you can read [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-13.5.1)
 
 
 ### exploit
 
-After couple of hours and tries I found the requirements to make exploit functionable:
-- `X-F5-Auth-Token` header must be present (that's requirement for Apache sends request to Jetty backend)
-- `Connection` header *must* include `X-F5-Auth-Token` (based on hop-by-hop headers this will delete `X-F5-Auth-Token` from the request to backend)
-- `Host` header *must* be `localhost` or `127.0.0.1` (Jetty checks this value or you can put `X-Forwarded-Host` to `Connection` header to make `X-Forwarded-Host` header invisible for Jetty)
+After couple of hours and tries I found the requirements to make the exploit functionable:
+- `X-F5-Auth-Token` header must be present (that's a requirement for Apache sends request to Jetty backend)
+- `Connection` header *must* include `X-F5-Auth-Token` (based on hop-by-hop headers this will delete `X-F5-Auth-Token` from the request sended to the backend)
+- `Host` header *must* be `localhost` or `127.0.0.1` (Jetty either checks this value or you can put `X-Forwarded-Host` to `Connection` header to make `X-Forwarded-Host` header invisible for Jetty)
 - `Authentication` header *must* be `admin` user
 
 *curl*
