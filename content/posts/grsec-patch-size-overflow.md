@@ -11,7 +11,7 @@ ShowToc: true
 I think you sure know linux kernel patches from [grsecurity](https://grsecurity.net/). 
 In follow tweet you can read about size overflow in patch from grsec.
 
-{{< tweet marcan42 724749571495075840 >}}
+`Tweet was in the meanwhile deleted`.
 
 So what is the problem in this patch? When you change int (signed value) to size_t (unsigned value), you have to be sure you are saving unsigned value.
 

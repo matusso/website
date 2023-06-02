@@ -172,6 +172,8 @@ $ nasm -f elf shellcode.asm
 $ ld -m elf_i386 -o key_ed shellcode.o
 ```
 
+![osce_prologue](/img/osce-prologue.png)
+
 Finally let's find the __secret key__!
 ```bash
 $ gdb ./key_ed
