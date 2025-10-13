@@ -1,10 +1,13 @@
 ---
-title: "OSCE Prologue or How to get Secret key to CTP?"
+title: "Prologue"
 date: "2020-01-22T14:32:59+01:00"
 draft: false
 tags: ["offensive-security", "hacking", "ctf"]
 categories: ["ctf"]
 ---
+
+
+### OSCE Prologue or How to get Secret key to CTP?
 
 If you want to register to CTP, you will need something they call Registration Code and Secret Key.  So firstly, there is interesting file __/fc4.js__
 ```javascript

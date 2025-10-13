@@ -166,4 +166,4 @@ That's all from my side, you can look at python [exploit](https://github.com/hor
 
 ### twitter story
 
-{{< tweet BursaMatus 1523379163914137600 >}}
+{{< tweet user="BursaMatus" id="1523379163914137600" >}}

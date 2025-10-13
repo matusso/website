@@ -35,7 +35,7 @@ int main(void) {
 ```bash
 $ gcc -Wall test.c -o test
 $ ./test
-18446744073709551601
+{{ twitter BursaMatus 18446744073709551601}}
 ```
 
 Small negative value (for example: -15) sets the big unsigned value. For better understand you can read this. And this problem can cause local DoS attack on your system via 100%cpu usage.
