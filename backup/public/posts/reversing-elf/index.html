@@ -1,0 +1,2660 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="no-js dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#76B900" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
+
+
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">  
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+
+
+<title>Reversing ELF | .burso | blog about ctf &amp; anything else</title>
+<meta name="title" content="Reversing ELF" /><meta name="description" content="Hi, today I would like to show you how to solve easy RE CTF and how to start with RE, my directory after finish all challenges looks following:
+text $ tree . …" />
+
+<script src="/js/early/early-init.js" defer></script>
+
+
+<style>
+   
+  html.no-transitions,
+  html.no-transitions * {
+    transition: none !important;
+  }
+  
+   
+  :root {
+    --color-text-primary: #111827;
+    --color-text-secondary: #6b7280;
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f9fafb;
+    --color-surface: #ffffff;
+  }
+  
+  .dark {
+    --color-text-primary: #f9fafb;
+    --color-text-secondary: #d1d5db;
+    --color-bg-primary: #111827;
+    --color-bg-secondary: #1f2937;
+    --color-surface: #1f2937;
+  }
+  
+   
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  
+  html.no-transitions body {
+    transition: none !important;
+  }
+</style>
+
+<meta name="keywords" content="ctf, re, IDA, elfutils, tryhackme, posts" />
+<meta name="article:published_time" content="2020-12-07T19:06:00&#43;01:00" /><meta name="article:modified_time" content="2022-04-27T15:29:54&#43;02:00" /><meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large" />
+
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Reversing ELF" />
+<meta property="og:description" content="Hi, today I would like to show you how to solve easy RE CTF and how to start with RE, my directory after finish all challenges looks following:
+text $ tree . …" />
+<meta property="og:url" content="//localhost:1313/posts/reversing-elf/" />
+<meta property="og:site_name" content=".burso | blog about ctf &amp; anything else" />
+<meta property="og:locale" content="en" />
+<meta property="article:published_time" content="2020-12-07T19:06:00&#43;01:00" /><meta property="article:modified_time" content="2022-04-27T15:29:54&#43;02:00" /><meta property="article:section" content="posts" /><meta property="article:tag" content="ctf" /><meta property="article:tag" content="re" /><meta property="article:tag" content="IDA" /><meta property="article:tag" content="elfutils" /><meta property="article:tag" content="tryhackme" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Reversing ELF" />
+<meta name="twitter:description" content="Hi, today I would like to show you how to solve easy RE CTF and how to start with RE, my directory after finish all challenges looks following:
+text $ tree . …" />
+
+
+
+
+<link rel="canonical" href="//localhost:1313/posts/reversing-elf/" />
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "\u0022Reversing ELF\u0022",
+  "description": "\"Hi, today I would like to show you how to solve easy RE CTF and how to start with RE, my directory after finish all challenges looks following:\\ntext $ tree . …\"",
+  "url": "\/\/localhost:1313\/posts\/reversing-elf\/","datePublished": "2020-12-07T19:06:00\u002b01:00","dateModified": "2022-04-27T15:29:54\u002b02:00","wordCount":  1436 ,"publisher": {
+    "@type": "Organization",
+    "name": ".burso | blog about ctf \u0026 anything else",
+    "url": "\/\/localhost:1313\/"}
+}
+</script>
+
+
+<meta name="generator" content="Hugo 0.151.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="dns-prefetch" href="//unpkg.com">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="/css/bundle-development.css" id="main-css">
+  <style>
+    :root {
+      --hugo-environment: "development";
+      --hugo-build: "development";
+      --theme-version: "0.0.0";
+    }</style>
+<script type="module" src="/js/bundle-development.js" defer></script>
+  
+  <script type="application/json" id="hugo-environment-json">
+    {
+      "environment": "development",
+      "isProduction":  false ,
+      "debug":  false ,
+      "version": "0.0.0",
+      "baseURL": "\/\/localhost:1313\/",
+      "buildTime": "1760543465647"
+    }
+  </script><script src="/js/hugo-env-init.js" defer></script>
+
+  
+</head>
+<body class="bg-bg-primary antialiased" 
+      data-environment="development" 
+      data-theme="dark"
+      data-build="development"
+      data-version="0.0.0">
+  <header>
+</header><nav id="topNav" class="topbar" data-component="navigation-topbar">
+    
+    <div class="topbar__logo"><a href="/" class="topbar__logo-link"><img id="lightModeHome" src="/icons/light/home.svg" alt="Home" class="topbar__logo-image hidden">
+<img id="darkModeHome" src="/icons/dark/home.svg" alt="Home" class="topbar__logo-image hidden"></a>
+</div>
+    
+    
+    <div class="topbar__navigation">
+</div>
+    
+    
+    <div class="topbar__search"></div>
+    
+    
+    <div class="topbar__controls"><div id="chatTocToggle" class="chat-toc-toggle" role="group" aria-label="Switch between Chat and Table of Contents" data-component="chat-toc-toggle">
+            <button class="chat-toc-toggle__option" data-mode="chat" aria-label="Switch to Chat" title="Chat Panel">
+                <img src="/icons/light/robot.svg" alt="Chat" class="icon chat-toc-toggle__icon">
+            </button>
+            <button class="chat-toc-toggle__option" data-mode="toc" aria-label="Switch to Table of Contents" title="Table of Contents">
+                <img src="/icons/light/toc.svg" alt="TOC" class="icon chat-toc-toggle__icon">
+            </button>
+        </div>
+        
+        
+        
+        <button id="darkModeToggle" aria-label="Toggle Darkmode" class="topbar__button" data-component="theme-toggle">
+            <img id="moon" src="/icons/light/dark.svg" alt="moon" class="icon hidden" title="Dark Mode">
+            <img id="sun" src="/icons/light/light.svg" alt="sun" class="icon hidden" title="Light Mode">
+        </button>
+    </div>
+</nav>
+  <main class="layout-shell layout-density--comfortable" data-has-right-rail="true" >
+    
+
+<button type="button" class="fixed top-4 left-4 z-50 xl:hidden bg-brand text-white p-2 rounded-lg shadow-lg" aria-label="Toggle navigation menu" data-component="navigation-mobile-toggle">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+</button>
+
+
+<div class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden xl:hidden" data-navigation-overlay></div>
+
+
+
+<aside id="sidebar-left" class="sidebar block fixed xl:sticky left-0 top-0 xl:top-16 z-40 h-full xl:h-[calc(100vh-4rem)] w-80 xl:w-auto -translate-x-full xl:translate-x-0 transition-all duration-300 ease-in-out overflow-y-auto pr-1" data-component="navigation-sidebar-left" role="navigation" aria-label="Primary">
+    
+    <div class="sidebar__header flex xl:hidden items-center justify-between p-4">
+        <h2 class="text-lg font-semibold">Navigation</h2>
+        <button type="button" class="sidebar__close-button p-2 rounded-lg" aria-label="Close navigation menu" data-navigation-close>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </div>
+    
+    <div class="sidebar__link-tree pt-4 md:pt-4 px-4 md:px-0 h-full w-full" data-link-tree>
+        
+        
+        <ul class="space-y-1 pl-0 list-none" data-level="1">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-1
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/" 
+        data-level="1" 
+        data-current="false" 
+        data-parent="/" 
+        data-section="true">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Posts
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Posts section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="2">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/big-ip-f5/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    F5 BIG-IP iControl REST vulnerability CVE-2022-1388
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/racecar/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    racecar
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/ret2win/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    ret2win
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/brainpan-1/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    brainpan 1
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link sidebar__link--active" 
+        href="/posts/reversing-elf/" 
+        data-level="2" 
+        data-current="true" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Reversing ELF
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/inclusion/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Inclusion
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/blue/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Blue
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/borderlands/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Borderlands
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/bookface/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Bookface
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/daily-bugle/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Daily Bugle
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/impossible-password/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Impossible Password
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/citrix-vulnerability/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    How find a vulnerable server on the internet?
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/grsec-patch-size-overflow/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    .grsec patch size_overflow
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-1
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/" 
+        data-level="1" 
+        data-current="false" 
+        data-parent="/" 
+        data-section="true">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Index.md
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Index.md section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="2">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/docs/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Academy
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Academy section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="3">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Conferences
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Conferences section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="4">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2017/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    2017
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand 2017 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="5">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-default">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2017/34c3-tuwat/" 
+        data-level="5" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/2017/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Notes from #34c3
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2024/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    2024
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand 2024 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2025/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    2025
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand 2025 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/htb/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Hack The Box
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Hack The Box section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/pnpt/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Practical Network Penetration Tester
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Practical Network Penetration Tester section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/osce/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Offensive Security Certified Expert
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Offensive Security Certified Expert section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="4">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/osce/osce-prologue/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/osce/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Prologue
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/f1/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/docs/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    F1
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand F1 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="3">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/f1/how-to-fix-f1/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/f1/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    How to fix Formula1 or how to make F1 even more exciting sport.
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/prielom/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/docs/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Prielom
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Prielom section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="3">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/prielom/prielom-1/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/prielom/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    .prielom #1
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+</ul>
+    </div>
+</aside>
+    <div id="pageContainer" class="p-4 w-full md:flex-1 min-w-0 mx-auto page-container xl:px-8 2xl:px-12">
+      
+      
+      
+      
+      <div id="mainContent" class="transition-opacity duration-300"><section id="articleSummarizationContainer" class="hidden border border-dotted m-4 p-4 rounded-md transition-opacity duration-500" data-component="article-summarization">
+    <h2 class="text-3xl font-bold text-text-primary mb-4">Article Summarization</h2>
+    <div id="articleSummaryOutput" class="flex items-center justify-center p-4 my-4 bg-zinc-100 rounded-md text-text-primary text-sm transition-all duration-300 ease-in-out">
+        <div class="animate-spin h-5 w-5 mr-3 border-4 border-brand rounded-full border-t-transparent"></div>
+        <p id="generationMessage">Generating summary...</p>
+    </div>
+</section>
+<div class="mb-4 mx-auto max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
+      <div class="article-header" data-component="article-header">
+  <div class="article-header__navigation">
+    <nav aria-label="Breadcrumb" class="breadcrumb" role="navigation" data-component="breadcrumbs">
+  <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item">
+        <a href="//localhost:1313/posts/" 
+           class="breadcrumb__link" 
+           itemprop="item"
+           aria-label="Navigate to Posts">
+          <span itemprop="name">Posts</span>
+        </a>
+        <meta itemprop="position" content="1" />
+        <span class="breadcrumb__separator" aria-hidden="true">›</span>
+      </li>
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item"><button class="breadcrumb__current breadcrumb__current--clickable" 
+                aria-current="page"
+                aria-expanded="false"
+                aria-controls="article-metadata-panel"
+                data-metadata-toggle
+                itemprop="item">
+          <span itemprop="name">Reversing ELF</span>
+          <svg class="breadcrumb__metadata-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button><meta itemprop="position" content="2" />
+    </li>
+  </ol>
+</nav><div class="article-header__actions">
+      
+<div class="article-header__copy-page relative" data-component="copy-page">
+  <button 
+    class="article-header__copy-toggle" 
+    type="button"
+    aria-expanded="false"
+    aria-haspopup="true"
+    data-copy-page-toggle>
+    <span class="article-header__copy-text">Share</span>
+    <svg class="article-header__copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+    </svg>
+    <svg class="article-header__copy-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-dropdown-arrow>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+  
+  
+  <div 
+    class="article-header__copy-dropdown"
+    data-copy-page-dropdown
+    data-state="hidden">
+    <div class="article-header__copy-dropdown-content">
+      
+      <button 
+        class="copy-page-menu-item"
+        data-copy-url="//localhost:1313/posts/reversing-elf/">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+        </svg>
+        Copy URL
+      </button>
+      
+      
+      
+      
+      
+      
+      <a 
+        href="//localhost:1313/posts/reversing-elf/index.txt"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="copy-page-menu-item"
+        data-open-txt>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"></path>
+        </svg>
+        Open LLM text
+      </a>
+      <button 
+        class="copy-page-menu-item"
+        data-copy-txt="//localhost:1313/posts/reversing-elf/index.txt">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+        </svg>
+        Copy LLM text
+      </button>
+
+      
+      <button 
+        class="copy-page-menu-item"
+        data-copy-content>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+        </svg>
+        Copy content
+      </button>
+      
+      <hr class="copy-page-separator">
+      
+      
+      <div class="copy-page-section-header">
+        Share with AI
+      </div>
+      
+      
+      <a 
+        href="https://claude.ai/chat?q=Please%20help%20me%20understand%20this%20documentation%3A%20%2F%2Flocalhost%3A1313%2Fposts%2Freversing-elf%2F"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="copy-page-menu-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L2 7v10l10 5 10-5V7l-10-5z"/>
+        </svg>
+        Ask Claude
+      </a>
+      
+      
+      <a 
+        href="https://chat.openai.com/?q=Please%20help%20me%20understand%20this%20documentation%3A%20%2F%2Flocalhost%3A1313%2Fposts%2Freversing-elf%2F"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="copy-page-menu-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.888 4.36a5.99 5.99 0 0 0-2.907 6.507 6.018 6.018 0 0 0 .517 4.91 6.05 6.05 0 0 0 6.51 2.9A6.065 6.065 0 0 0 19.376 16.64a5.99 5.99 0 0 0 2.907-6.507l-.001-.312z"/>
+        </svg>
+        Ask ChatGPT
+      </a>
+      
+      
+      <a 
+        href="https://copilot.microsoft.com/?q=Please%20help%20me%20understand%20this%20documentation%3A%20%2F%2Flocalhost%3A1313%2Fposts%2Freversing-elf%2F"
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="copy-page-menu-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.5 2C8.9 2 6 4.9 6 8.5c0 1.2.3 2.3.8 3.3L12 21l5.2-9.2c.5-1 .8-2.1.8-3.3C18 4.9 15.1 2 11.5 2z"/>
+        </svg>
+        Ask Copilot
+      </a>
+    </div>
+  </div>
+</div></div>
+  </div>
+
+  <div 
+    id="article-metadata-panel" 
+    class="article-header__metadata-panel"
+    aria-hidden="true"
+    data-metadata-panel><div class="metadata" data-component="article-metadata">
+    <div class="metadata__flow">
+      <div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+          </svg>
+          <time datetime="2020-12-07T19:06:00&#43;01:00">
+            Dec 7, 2020
+          </time>
+        </div><div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+          </svg>
+          <span>7 min read</span>
+        </div><div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clip-rule="evenodd"></path>
+          </svg>
+          <span>1436 words</span>
+        </div><div class="metadata__item metadata__item--secondary">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+          </svg>
+          <span>Updated Apr 27</span>
+        </div></div>
+  </div></div></div>
+  </div>
+  <article class="prose mx-auto max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
+    <header class="mb-6 not-prose">
+        <h1 class="text-3xl font-bold mb-3" style="color: var(--color-text-primary);">Reversing ELF</h1></header>
+
+    <div id="articleContent" class="article-content">
+      <p>Hi,
+today I would like to show you how to solve easy RE CTF and how to start with RE,
+my directory after finish all challenges looks following:</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465656875000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465656875000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465656875000"><pre tabindex="0"><code>$ tree
+.
+├── crackme_1
+│   ├── crackme1
+│   └── flag.txt
+├── crackme_2
+│   ├── crackme2
+│   └── flag.txt
+├── crackme_3
+│   ├── crackme3
+│   └── flag.txt
+├── crackme_4
+│   ├── crackme4
+│   ├── flag.txt
+│   └── gdb_cmd
+├── crackme_5
+│   ├── crackme5
+│   ├── flag.txt
+│   ├── preload.c
+│   └── preload.so
+├── crackme_6
+│   ├── crackme6
+│   └── flag.txt
+├── crackme_7
+│   ├── crackme7
+│   └── flag.txt
+└── crackme_8
+    ├── crackme8
+    ├── flag.txt
+    └── gdb_cmd</code></pre></div>
+</div>
+
+<p>Before we start I would recommend following software</p>
+<ul>
+<li><a href="">r2</a></li>
+<li><a href="">gdb</a></li>
+</ul>
+<p>And you can find this game <a href="https://tryhackme.com/room/reverselfiles">here</a>.
+Now let&rsquo;s look deeper on each of the challenge.</p>
+
+
+
+
+<h3 id="crackme_1" class="group block scroll-anchor py-4">
+    crackme_1
+    <a id="reversing-elf-crackme_1" href="#reversing-elf-crackme_1" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465656981000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465656981000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465656981000"><pre tabindex="0"><code>$ file crackme1
+crackme1: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=672f525a7ad3c33f190c060c09b11e9ffd007f34, not stripped</code></pre></div>
+</div>
+
+<p>Okay, file is <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">ELF</a>, now we try to run it.</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657023000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657023000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657023000"><pre tabindex="0"><code>$ ./crackme1
+flag{not_that_kind_of_elf}</code></pre></div>
+</div>
+
+<p>:) It is enough to run it, nothing special so far.</p>
+
+
+
+
+<h3 id="crackme_2" class="group block scroll-anchor py-4">
+    crackme_2
+    <a id="reversing-elf-crackme_2" href="#reversing-elf-crackme_2" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657072000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657072000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657072000"><pre tabindex="0"><code>$ file crackme2
+crackme2: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=b799eb348f3df15f6b08b3c37f8feb269a60aba7, not stripped
+$ ./crackme2
+Usage: ./crackme2 password
+$ ./crackme2 aaa
+Access denied.</code></pre></div>
+</div>
+
+<p>Let&rsquo;s look strings in binary</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657095000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657095000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657095000"><pre tabindex="0"><code>$ strings crackme2
+/lib/ld-linux.so.2
+libc.so.6
+_IO_stdin_used
+puts
+printf
+memset
+strcmp
+...
+Usage: %s password
+super_secret_password
+...
+.got.plt
+.data
+.bss
+.comment</code></pre></div>
+</div>
+
+<p>Nice, we probably have password, let&rsquo;s try it</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657115000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657115000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657115000"><pre tabindex="0"><code>$ ./crackme2 super_secret_password
+Access granted.
+flag{if_i_submit_this_flag_then_i_will_get_points}</code></pre></div>
+</div>
+
+<p>Great, second flag is ours.</p>
+
+
+
+
+<h3 id="crackme_3" class="group block scroll-anchor py-4">
+    crackme_3
+    <a id="reversing-elf-crackme_3" href="#reversing-elf-crackme_3" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657158000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657158000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657158000"><pre tabindex="0"><code>$ file crackme3
+crackme3: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.6.24, BuildID[sha1]=4cf7250afb50109f0f1a01cc543fbf5ba6204a73, stripped
+$ strings crackme3
+/lib/ld-linux.so.2
+__gmon_start__
+libc.so.6
+_IO_stdin_used
+puts
+strlen
+malloc
+...
+Usage: %s PASSWORD
+malloc failed
+ZjByX3kwdXJfNWVjMG5kX2xlNTVvbl91bmJhc2U2NF80bGxfN2gzXzdoMW5nNQ==
+Correct password!
+Come on, even my aunt Mildred got this one!
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+...
+.got.plt
+.data
+.bss
+.comment</code></pre></div>
+</div>
+
+<p>There is a string encoded by <a href="https://en.wikipedia.org/wiki/Base64">base64</a></p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657196000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657196000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657196000"><pre tabindex="0"><code>$ echo &#34;ZjByX3kwdXJfNWVjMG5kX2xlNTVvbl91bmJhc2U2NF80bGxfN2gzXzdoMW5nNQ==&#34; | base64 -d
+f0r_y0ur_5ec0nd_le55on_unbase64_4ll_7h3_7h1ng5</code></pre></div>
+</div>
+
+<p>Just couple of seconds and thirdth flag is on our side.</p>
+
+
+
+
+<h3 id="crackme_4" class="group block scroll-anchor py-4">
+    crackme_4
+    <a id="reversing-elf-crackme_4" href="#reversing-elf-crackme_4" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657235000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657235000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657235000"><pre tabindex="0"><code>$ file crackme4
+crackme4: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.24, BuildID[sha1]=862ee37793af334043b423ba50ec91cfa132260a, not stripped
+$ strings crackme4
+/lib64/ld-linux-x86-64.so.2
+libc.so.6
+puts
+...
+password OK
+password &#34;%s&#34; not OK
+Usage : %s password
+This time the string is hidden and we used strcmp
+...</code></pre></div>
+</div>
+
+<p>Nothing special between strings, but we know, binary is using strcmp to compare &ldquo;passwords&rdquo;</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657259000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657259000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657259000"><pre tabindex="0"><code>$ ./crackme4
+Usage : ./crackme4 password
+This time the string is hidden and we used strcmp
+$ ./crackme4 AAA
+password &#34;AAA&#34; not OK</code></pre></div>
+</div>
+
+<p>Try to disassemble it and find place, where <strong>strcmp</strong> is called.</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657279000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657279000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657279000"><pre tabindex="0"><code>$ objdump -D crackme4 | grep call | grep strcmp
+  4006d5:       e8 46 fe ff ff          callq  400520 &lt;strcmp@plt&gt;</code></pre></div>
+</div>
+
+<p>Prepare <strong>gdb_cmd</strong> file with following content:</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657303000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657303000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657303000"><pre tabindex="0"><code>break * 0x4006D5
+run aaa
+x/s $rax</code></pre></div>
+</div>
+
+<p>Let&rsquo;s start gdb with commands from file <strong>gdb_cmd</strong></p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657325000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657325000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657325000"><pre tabindex="0"><code>$ gdb -x gdb_cmd ./crackme4
+GNU gdb (GDB) 10.1
+...
+Undefined command: &#34;import&#34;.  Try &#34;help&#34;.
+Reading symbols from ./crackme4...
+(No debugging symbols found in ./crackme4)
+Breakpoint 1 at 0x4006d5
+
+Breakpoint 1, 0x00000000004006d5 in compare_pwd ()
+0x7fffffffe440: &#34;my_m0r3_secur3_pwd&#34;
+(gdb)</code></pre></div>
+</div>
+
+<p>We can verify this password with the application <strong>crackme4</strong></p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657344000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657344000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657344000"><pre tabindex="0"><code>$ ./crackme4 my_m0r3_secur3_pwd
+password OK</code></pre></div>
+</div>
+
+
+
+
+
+<h3 id="crackme_5" class="group block scroll-anchor py-4">
+    crackme_5
+    <a id="reversing-elf-crackme_5" href="#reversing-elf-crackme_5" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657382000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657382000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657382000"><pre tabindex="0"><code>$ file crackme5
+crackme5: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=a426dcf8ed3de8cb02f3ee4f38ee36b4ed568519, not stripped</code></pre></div>
+</div>
+
+<p>Again nothing special in strings so I will not give you output of strings command here now.
+Let&rsquo;s look into function names which application is using</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657404000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657404000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657404000"><pre tabindex="0"><code>$ gdb crackme5
+GNU gdb (GDB) 10.1
+...
+Reading symbols from crackme5...
+(No debugging symbols found in crackme5)
+(gdb) info functions
+All defined functions:
+
+Non-debugging symbols:
+0x0000000000400528  _init
+0x0000000000400560  strncmp@plt
+0x0000000000400570  puts@plt
+0x0000000000400580  strlen@plt
+0x0000000000400590  __stack_chk_fail@plt
+0x00000000004005a0  __libc_start_main@plt
+0x00000000004005b0  atoi@plt
+0x00000000004005c0  __isoc99_scanf@plt
+0x00000000004005d0  __gmon_start__@plt
+0x00000000004005e0  _start
+0x0000000000400610  deregister_tm_clones
+0x0000000000400650  register_tm_clones
+0x0000000000400690  __do_global_dtors_aux
+0x00000000004006b0  frame_dummy
+0x00000000004006d6  strcmp_
+0x0000000000400773  main
+0x000000000040086e  check
+0x00000000004008d0  __libc_csu_init
+0x0000000000400940  __libc_csu_fini
+0x0000000000400944  _fini</code></pre></div>
+</div>
+
+<p>Okay, looks like <strong>strncmp</strong> is using for comparing password and your input, so we can override this function,
+let&rsquo;s create <strong>preload.c</strong> file with following content:</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657432000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657432000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657432000"><pre tabindex="0"><code>#define _GNU_SOURCE
+
+#include &lt;stdio.h&gt;
+#include &lt;dlfcn.h&gt;
+
+int strncmp(const char *s1, const char *s2, size_t n) {
+    printf(&#34;S1: [%s], S2: [%s]\n&#34;, s1, s2);
+    int (*original_strcmp)(const char*, const char*, size_t);
+    original_strcmp = dlsym(RTLD_NEXT, &#34;strcmp&#34;);
+
+    return (*original_strcmp)(s1, s2, n);
+}</code></pre></div>
+</div>
+
+<p>Now compile our code and run <strong>crackme5</strong> with following parameters to load our library:</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657453000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657453000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657453000"><pre tabindex="0"><code>$ gcc -Wall -fPIC -shared -o preload.so preload.c -ldl
+$ LD_PRELOAD=./preload.so ./crackme5
+Enter your input:
+AAA
+S1: [AAA], S2: [OfdlDSA|3tXb32~X3tX@sX`4tXtz]
+Always dig deeper</code></pre></div>
+</div>
+
+<p>Nice :) we have another flag.</p>
+
+
+
+
+<h3 id="crackme_6" class="group block scroll-anchor py-4">
+    crackme_6
+    <a id="reversing-elf-crackme_6" href="#reversing-elf-crackme_6" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657497000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657497000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657497000"><pre tabindex="0"><code>$ file crackme6
+crackme6: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.24, BuildID[sha1]=022f1a8e479cab9f7263af75bcdbb328bda7f291, not stripped</code></pre></div>
+</div>
+
+<p>When we look into functions, we can see function called <strong>my_secure_test</strong> there.</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657515000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657515000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657515000"><pre tabindex="0"><code>$ gdb ./crackme6
+GNU gdb (GDB) 10.1
+...
+Reading symbols from ./crackme6...
+(No debugging symbols found in ./crackme6)
+(gdb) info functions
+All defined functions:
+
+Non-debugging symbols:
+0x0000000000400418  _init
+0x0000000000400450  puts@plt
+0x0000000000400460  printf@plt
+0x0000000000400470  __libc_start_main@plt
+0x0000000000400480  __gmon_start__@plt
+0x0000000000400490  _start
+0x00000000004004c0  deregister_tm_clones
+0x00000000004004f0  register_tm_clones
+0x0000000000400530  __do_global_dtors_aux
+0x0000000000400550  frame_dummy
+0x000000000040057d  my_secure_test
+0x00000000004006d1  compare_pwd
+0x0000000000400711  main
+0x0000000000400760  __libc_csu_init
+0x00000000004007d0  __libc_csu_fini
+0x00000000004007d4  _fini</code></pre></div>
+</div>
+
+<p>This function is starting on address <code>0x040057d</code> and finishing on address <code>0x04006d0</code>,
+so let&rsquo;s find all <code>cmp</code> instructions between these two addresses</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657532000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657532000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657532000"><pre tabindex="0"><code>$ objdump -D crackme6  | egrep -e &#34;4005|4006&#34; | grep &#34;cmp &#34;
+  400597:       3c 31                   cmp    $0x31,%al
+  4005bf:       3c 33                   cmp    $0x33,%al
+  4005e7:       3c 33                   cmp    $0x33,%al
+  40060f:       3c 37                   cmp    $0x37,%al
+  400637:       3c 5f                   cmp    $0x5f,%al
+  40065f:       3c 70                   cmp    $0x70,%al
+  400684:       3c 77                   cmp    $0x77,%al
+  4006a9:       3c 64                   cmp    $0x64,%al</code></pre></div>
+</div>
+
+<p>When we convert hex values to characters in <a href="https://www.asciitable.com/">ASCII table</a>, we get <strong>1337_pwd</strong></p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657575000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657575000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657575000"><pre tabindex="0"><code>$ ./crackme6 1337_pwd
+password OK</code></pre></div>
+</div>
+
+
+
+
+
+<h3 id="crackme_7" class="group block scroll-anchor py-4">
+    crackme_7
+    <a id="reversing-elf-crackme_7" href="#reversing-elf-crackme_7" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><p>Now we can look on <strong>crackme7</strong> binary</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657615000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657615000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657615000"><pre tabindex="0"><code>$ file crackme7
+crackme7: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=7ee4206d91718e7b0bef16a7c03f8fa49c4a39e7, not stripped</code></pre></div>
+</div>
+
+<p>Again, nothing special in binary strings, so we look into functions</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657635000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657635000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657635000"><pre tabindex="0"><code>$ r2 crackme7
+ -- Mess with the best, Die like the rest
+[0x080483c0]&gt; aaa
+...
+[0x080483c0]&gt; afl
+0x080483c0    1 33           entry0
+0x08048380    1 6            sym.imp.__libc_start_main
+0x08048400    4 43           sym.deregister_tm_clones
+0x08048430    4 53           sym.register_tm_clones
+0x08048470    3 30           sym.__do_global_dtors_aux
+0x08048490    4 43   -&gt; 40   entry.init0
+0x080486a6    4 149          sym.giveFlag
+0x080487a0    1 2            sym.__libc_csu_fini
+0x080483f0    1 4            sym.__x86.get_pc_thunk.bx
+0x080487a4    1 20           sym._fini
+0x08048740    4 93           sym.__libc_csu_init
+0x080484bb   20 491          main
+0x08048324    3 35           sym._init
+0x08048360    1 6            sym.imp.printf
+0x08048370    1 6            sym.imp.puts
+0x08048390    1 6            sym.imp.memset
+0x080483a0    1 6            sym.imp.__isoc99_scanf</code></pre></div>
+</div>
+
+<p>Basicaly we want to call function <strong>sym.giveFlag</strong> on address <code>0x080486a6</code>,
+so we need to find where the function is called</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657654000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657654000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657654000"><pre tabindex="0"><code>[0x080483c0]&gt; axt sym.giveFlag
+main 0x804867c [CALL] call sym.giveFlag</code></pre></div>
+</div>
+
+<p>Okay, so function is called in function <strong>main</strong></p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657670000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657670000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657670000"><pre tabindex="0"><code>[0x080483c0]&gt; pdf @ main</code></pre></div>
+</div>
+
+<p><img src="/img/reverselfiles/crackme7.png" alt="reverse2 #1"></p>
+<p>you can see compare <code>cmp eax, 0x7a69</code>
+instruction near before calling <strong>giveFlag</strong> function
+and again when we convert <code>7a69</code> hex to decimal,
+then we have a <a href="https://www.hexdictionary.com/hex/7A69">result</a>.</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657866000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657866000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657866000"><pre tabindex="0"><code>$ ./crackme7
+Menu:
+
+[1] Say hello
+[2] Add numbers
+[3] Quit
+
+[&gt;] 31337
+Wow such h4x0r!
+flag{much_reversing_very_ida_wow}</code></pre></div>
+</div>
+
+
+
+
+
+<h3 id="crackme_8" class="group block scroll-anchor py-4">
+    crackme_8
+    <a id="reversing-elf-crackme_8" href="#reversing-elf-crackme_8" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><p>Okay, now we have last one so let&rsquo;s get basic informations</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657932000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657932000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657932000"><pre tabindex="0"><code>$ file crackme8
+crackme8: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=fef76e38b5ff92ed0d08870ac523f9f3f8925a40, not stripped
+$ ./crackme8
+Usage: ./crackme8 password
+$ ./crackme8 abcdef
+Access denied.</code></pre></div>
+</div>
+
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657961000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657961000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657961000"><pre tabindex="0"><code>$ r2 crackme8
+ -- 256 colors ought to be enough for anybody
+[0x080483a0]&gt; aaa
+...
+[0x080483a0]&gt; afl
+0x080483a0    1 33           entry0
+0x08048360    1 6            sym.imp.__libc_start_main
+0x080483e0    4 43           sym.deregister_tm_clones
+0x08048410    4 53           sym.register_tm_clones
+0x08048450    3 30           sym.__do_global_dtors_aux
+0x08048470    4 43   -&gt; 40   entry.init0
+0x08048524    4 149          sym.giveFlag
+0x08048620    1 2            sym.__libc_csu_fini
+0x080483d0    1 4            sym.__x86.get_pc_thunk.bx
+0x08048624    1 20           sym._fini
+0x080485c0    4 93           sym.__libc_csu_init
+0x0804849b    6 137          main
+0x08048300    3 35           sym._init
+0x08048340    1 6            sym.imp.printf
+0x08048350    1 6            sym.imp.puts
+0x08048370    1 6            sym.imp.memset
+0x08048380    1 6            sym.imp.atoi
+[0x080483a0]&gt; axt sym.giveFlag
+main 0x8048512 [CALL] call sym.giveFlag
+[0x080483a0]&gt; pdf @ main</code></pre></div>
+</div>
+
+<p><img src="/img/reverselfiles/crackme8.png" alt="reverse2 #2"></p>
+<p>You can see on address <code>0x080484e4</code> instruction <code>cmp eax, 0xcafef00d</code> so, now we can prepare <strong>gdb</strong> commands.
+Create file called <em>gdb_cmd</em> with following content:</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465658020000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465658020000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465658020000"><pre tabindex="0"><code>break * 0x080484E4
+r 1
+set $eax=3405705229
+c</code></pre></div>
+</div>
+
+<p>Btw, decimal value <strong>3405705229</strong> in <code>$eax</code> register is converted from <strong>cafef00d</strong> hex.
+Now, we can run binary as follows:</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465658037000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465658037000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465658037000"><pre tabindex="0"><code>$ gdb -x gdb_cmd ./crackme8
+GNU gdb (GDB) 10.1
+...
+Undefined command: &#34;import&#34;.  Try &#34;help&#34;.
+Reading symbols from ./crackme8...
+(No debugging symbols found in ./crackme8)
+Breakpoint 1 at 0x80484e4
+
+Breakpoint 1, 0x080484e4 in main ()
+Access granted.
+flag{at_least_this_cafe_wont_leak_your_credit_card_numbers}
+[Inferior 1 (process 1537622) exited normally]
+(gdb)</code></pre></div>
+</div>
+
+<p>Done, we have the last flag we need.
+h4ppy r3v3r5e! ;)</p>
+
+    </div><footer class="mt-6 pt-5 border-t not-prose">
+        <div class="flex flex-wrap gap-2"><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              ctf
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              re
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              IDA
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              elfutils
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              tryhackme
+            </span></div>
+      </footer></article>
+
+  <div class="p-4">
+    
+  </div>
+</div>
+    </div><div class="hidden xl:block">
+<aside id="sidebar-right" class="sticky top-16 hidden xl:block h-[calc(100vh-4rem)] overflow-y-auto pr-2" data-component="navigation-sidebar-right" role="complementary" aria-label="On-page navigation">
+  
+  
+</aside>
+</div></main>
+  <footer>
+
+
+
+</footer>
+  
+  
+
+</body>
+</html>

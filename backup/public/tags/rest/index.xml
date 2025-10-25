@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>REST on .burso | blog about ctf &amp; anything else</title>
+    <link>//localhost:1313/tags/rest/</link>
+    <description>Recent content in REST on .burso | blog about ctf &amp; anything else</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 13 Oct 2025 12:20:35 +0200</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/rest/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>F5 BIG-IP iControl REST vulnerability CVE-2022-1388</title>
+      <link>//localhost:1313/posts/big-ip-f5/</link>
+      <pubDate>Mon, 09 May 2022 16:42:00 +0100</pubDate>
+      <guid>//localhost:1313/posts/big-ip-f5/</guid>
+      <description>&lt;p&gt;Good afternoon to every security researcher. I would like to share my experience of finding announced vulnerability by internal F5 security team and writing the exploit for &lt;a href=&#34;https://support.f5.com/csp/article/K23605346&#34;&gt;CVE-2022-1388&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;You can read more about this vulnerability on &lt;a href=&#34;https://thehackernews.com/2022/05/f5-warns-of-new-critical-big-ip-remote.html&#34;&gt;thehackernews&lt;/a&gt; or &lt;a href=&#34;https://www.helpnetsecurity.com/2022/05/09/cve-2022-1388-poc-exploitation/&#34;&gt;helpnetsecurity&lt;/a&gt;. &lt;a href=&#34;https://clouddocs.f5.com/api/icontrol-rest/&#34;&gt;iControl REST&lt;/a&gt; is an API for interaction between scripts and &lt;em&gt;F5 device&lt;/em&gt;, used to manage and control that device automatically.&lt;/p&gt;&#xA;&lt;p&gt;Based on the details of the &lt;em&gt;mitigation&lt;/em&gt;, the problem should be somewhere in the &lt;code&gt;Connection: &lt;/code&gt; header.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

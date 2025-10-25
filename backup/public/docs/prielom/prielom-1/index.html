@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="no-js dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#76B900" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
+
+
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">  
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+
+
+<title>.prielom #1 | .burso | blog about ctf &amp; anything else</title>
+<meta name="title" content=".prielom #1" /><meta name="description" content=" text ::::::::::. :::::::.. :::.,:::::: ::: ... . : `;;;```.;;;;;;;``;;;; ;;;;;;;&#39;&#39;&#39;&#39; ;;; .;;;;;;;. ;;,. ;;; `]]nnn]]&#39; [[[,/[[[&#39; [[[ …" />
+
+<script src="/js/early/early-init.js" defer></script>
+
+
+<style>
+   
+  html.no-transitions,
+  html.no-transitions * {
+    transition: none !important;
+  }
+  
+   
+  :root {
+    --color-text-primary: #111827;
+    --color-text-secondary: #6b7280;
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f9fafb;
+    --color-surface: #ffffff;
+  }
+  
+  .dark {
+    --color-text-primary: #f9fafb;
+    --color-text-secondary: #d1d5db;
+    --color-bg-primary: #111827;
+    --color-bg-secondary: #1f2937;
+    --color-surface: #1f2937;
+  }
+  
+   
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  
+  html.no-transitions body {
+    transition: none !important;
+  }
+</style>
+
+<meta name="keywords" content="grsec, kernel, DoS, docs" />
+<meta name="author" content="hysteria.sk" /><meta name="article:published_time" content="1998-01-06T00:00:00&#43;01:00" /><meta name="article:modified_time" content="2025-10-13T12:20:35&#43;02:00" /><meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large" />
+
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content=".prielom #1" />
+<meta property="og:description" content=" text ::::::::::. :::::::.. :::.,:::::: ::: ... . : `;;;```.;;;;;;;``;;;; ;;;;;;;&#39;&#39;&#39;&#39; ;;; .;;;;;;;. ;;,. ;;; `]]nnn]]&#39; [[[,/[[[&#39; [[[ …" />
+<meta property="og:url" content="//localhost:1313/docs/prielom/prielom-1/" />
+<meta property="og:site_name" content=".burso | blog about ctf &amp; anything else" />
+<meta property="og:locale" content="en" />
+<meta property="article:published_time" content="1998-01-06T00:00:00&#43;01:00" /><meta property="article:modified_time" content="2025-10-13T12:20:35&#43;02:00" /><meta property="article:author" content="hysteria.sk" /><meta property="article:section" content="docs" /><meta property="article:tag" content="grsec" /><meta property="article:tag" content="kernel" /><meta property="article:tag" content="DoS" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content=".prielom #1" />
+<meta name="twitter:description" content=" text ::::::::::. :::::::.. :::.,:::::: ::: ... . : `;;;```.;;;;;;;``;;;; ;;;;;;;&#39;&#39;&#39;&#39; ;;; .;;;;;;;. ;;,. ;;; `]]nnn]]&#39; [[[,/[[[&#39; [[[ …" />
+
+
+
+
+<link rel="canonical" href="//localhost:1313/docs/prielom/prielom-1/" />
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "\u0022.prielom #1\u0022",
+  "description": "\" text ::::::::::. :::::::.. :::.,:::::: ::: ... . : `;;;```.;;;;;;;``;;;; ;;;;;;;\\u0026#39;\\u0026#39;\\u0026#39;\\u0026#39; ;;; .;;;;;;;. ;;,. ;;; `]]nnn]]\\u0026#39; [[[,/[[[\\u0026#39; [[[ …\"",
+  "url": "\/\/localhost:1313\/docs\/prielom\/prielom-1\/","datePublished": "1998-01-06T00:00:00\u002b01:00","dateModified": "2025-10-13T12:20:35\u002b02:00","author": {
+        "@type": "Person",
+        "name": "hysteria.sk"
+      },"wordCount":  1784 ,"publisher": {
+    "@type": "Organization",
+    "name": ".burso | blog about ctf \u0026 anything else",
+    "url": "\/\/localhost:1313\/"}
+}
+</script>
+
+
+<meta name="generator" content="Hugo 0.151.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="dns-prefetch" href="//unpkg.com">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="/css/bundle-development.css" id="main-css">
+  <style>
+    :root {
+      --hugo-environment: "development";
+      --hugo-build: "development";
+      --theme-version: "0.0.0";
+    }</style>
+<script type="module" src="/js/bundle-development.js" defer></script>
+  
+  <script type="application/json" id="hugo-environment-json">
+    {
+      "environment": "development",
+      "isProduction":  false ,
+      "debug":  false ,
+      "version": "0.0.0",
+      "baseURL": "\/\/localhost:1313\/",
+      "buildTime": "1760543465647"
+    }
+  </script><script src="/js/hugo-env-init.js" defer></script>
+
+  
+</head>
+<body class="bg-bg-primary antialiased" 
+      data-environment="development" 
+      data-theme="dark"
+      data-build="development"
+      data-version="0.0.0">
+  <header>
+</header><nav id="topNav" class="topbar" data-component="navigation-topbar">
+    
+    <div class="topbar__logo"><a href="/" class="topbar__logo-link"><img id="lightModeHome" src="/icons/light/home.svg" alt="Home" class="topbar__logo-image hidden">
+<img id="darkModeHome" src="/icons/dark/home.svg" alt="Home" class="topbar__logo-image hidden"></a>
+</div>
+    
+    
+    <div class="topbar__navigation">
+</div>
+    
+    
+    <div class="topbar__search"></div>
+    
+    
+    <div class="topbar__controls"><div id="chatTocToggle" class="chat-toc-toggle" role="group" aria-label="Switch between Chat and Table of Contents" data-component="chat-toc-toggle">
+            <button class="chat-toc-toggle__option" data-mode="chat" aria-label="Switch to Chat" title="Chat Panel">
+                <img src="/icons/light/robot.svg" alt="Chat" class="icon chat-toc-toggle__icon">
+            </button>
+            <button class="chat-toc-toggle__option" data-mode="toc" aria-label="Switch to Table of Contents" title="Table of Contents">
+                <img src="/icons/light/toc.svg" alt="TOC" class="icon chat-toc-toggle__icon">
+            </button>
+        </div>
+        
+        
+        
+        <button id="darkModeToggle" aria-label="Toggle Darkmode" class="topbar__button" data-component="theme-toggle">
+            <img id="moon" src="/icons/light/dark.svg" alt="moon" class="icon hidden" title="Dark Mode">
+            <img id="sun" src="/icons/light/light.svg" alt="sun" class="icon hidden" title="Light Mode">
+        </button>
+    </div>
+</nav>
+  <main class="layout-shell layout-density--comfortable" data-has-right-rail="true" >
+    
+
+<button type="button" class="fixed top-4 left-4 z-50 xl:hidden bg-brand text-white p-2 rounded-lg shadow-lg" aria-label="Toggle navigation menu" data-component="navigation-mobile-toggle">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+</button>
+
+
+<div class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden xl:hidden" data-navigation-overlay></div>
+
+
+
+<aside id="sidebar-left" class="sidebar block fixed xl:sticky left-0 top-0 xl:top-16 z-40 h-full xl:h-[calc(100vh-4rem)] w-80 xl:w-auto -translate-x-full xl:translate-x-0 transition-all duration-300 ease-in-out overflow-y-auto pr-1" data-component="navigation-sidebar-left" role="navigation" aria-label="Primary">
+    
+    <div class="sidebar__header flex xl:hidden items-center justify-between p-4">
+        <h2 class="text-lg font-semibold">Navigation</h2>
+        <button type="button" class="sidebar__close-button p-2 rounded-lg" aria-label="Close navigation menu" data-navigation-close>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </div>
+    
+    <div class="sidebar__link-tree pt-4 md:pt-4 px-4 md:px-0 h-full w-full" data-link-tree>
+        
+        
+        <ul class="space-y-1 pl-0 list-none" data-level="1">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-1
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/" 
+        data-level="1" 
+        data-current="false" 
+        data-parent="/" 
+        data-section="true">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Posts
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Posts section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="2">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/big-ip-f5/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    F5 BIG-IP iControl REST vulnerability CVE-2022-1388
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/racecar/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    racecar
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/ret2win/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    ret2win
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/brainpan-1/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    brainpan 1
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/reversing-elf/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Reversing ELF
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/inclusion/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Inclusion
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/blue/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Blue
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/borderlands/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Borderlands
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/bookface/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Bookface
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/daily-bugle/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Daily Bugle
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/impossible-password/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Impossible Password
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/citrix-vulnerability/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    How find a vulnerable server on the internet?
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/grsec-patch-size-overflow/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    .grsec patch size_overflow
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-1
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/" 
+        data-level="1" 
+        data-current="false" 
+        data-parent="/" 
+        data-section="true">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Index.md
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Index.md section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="2">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/docs/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Academy
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Academy section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="3">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Conferences
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Conferences section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="4">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2017/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    2017
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand 2017 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="5">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-default">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2017/34c3-tuwat/" 
+        data-level="5" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/2017/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Notes from #34c3
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2024/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    2024
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand 2024 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2025/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    2025
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand 2025 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/htb/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Hack The Box
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Hack The Box section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/pnpt/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Practical Network Penetration Tester
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Practical Network Penetration Tester section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/osce/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Offensive Security Certified Expert
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Offensive Security Certified Expert section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="4">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/osce/osce-prologue/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/osce/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Prologue
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/f1/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/docs/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    F1
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand F1 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="3">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/f1/how-to-fix-f1/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/f1/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    How to fix Formula1 or how to make F1 even more exciting sport.
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/prielom/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/docs/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Prielom
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Prielom section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="3">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link sidebar__link--active" 
+        href="/docs/prielom/prielom-1/" 
+        data-level="3" 
+        data-current="true" 
+        data-parent="/docs/prielom/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    .prielom #1
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+</ul>
+    </div>
+</aside>
+    <div id="pageContainer" class="p-4 w-full md:flex-1 min-w-0 mx-auto page-container xl:px-8 2xl:px-12">
+      
+      
+      
+      
+      <div id="mainContent" class="transition-opacity duration-300"><section id="articleSummarizationContainer" class="hidden border border-dotted m-4 p-4 rounded-md transition-opacity duration-500" data-component="article-summarization">
+    <h2 class="text-3xl font-bold text-text-primary mb-4">Article Summarization</h2>
+    <div id="articleSummaryOutput" class="flex items-center justify-center p-4 my-4 bg-zinc-100 rounded-md text-text-primary text-sm transition-all duration-300 ease-in-out">
+        <div class="animate-spin h-5 w-5 mr-3 border-4 border-brand rounded-full border-t-transparent"></div>
+        <p id="generationMessage">Generating summary...</p>
+    </div>
+</section>
+<div class="mb-4 mx-auto max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
+      <div class="article-header" data-component="article-header">
+  <div class="article-header__navigation">
+    <nav aria-label="Breadcrumb" class="breadcrumb" role="navigation" data-component="breadcrumbs">
+  <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item">
+        <a href="//localhost:1313/docs/" 
+           class="breadcrumb__link" 
+           itemprop="item"
+           aria-label="Navigate to ">
+          <span itemprop="name"></span>
+        </a>
+        <meta itemprop="position" content="1" />
+        <span class="breadcrumb__separator" aria-hidden="true">›</span>
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item">
+        <a href="//localhost:1313/docs/prielom/" 
+           class="breadcrumb__link" 
+           itemprop="item"
+           aria-label="Navigate to Prielom">
+          <span itemprop="name">Prielom</span>
+        </a>
+        <meta itemprop="position" content="2" />
+        <span class="breadcrumb__separator" aria-hidden="true">›</span>
+      </li>
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item"><button class="breadcrumb__current breadcrumb__current--clickable" 
+                aria-current="page"
+                aria-expanded="false"
+                aria-controls="article-metadata-panel"
+                data-metadata-toggle
+                itemprop="item">
+          <span itemprop="name">.prielom #1</span>
+          <svg class="breadcrumb__metadata-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button><meta itemprop="position" content="3" />
+    </li>
+  </ol>
+</nav><div class="article-header__actions">
+      
+<div class="article-header__copy-page relative" data-component="copy-page">
+  <button 
+    class="article-header__copy-toggle" 
+    type="button"
+    aria-expanded="false"
+    aria-haspopup="true"
+    data-copy-page-toggle>
+    <span class="article-header__copy-text">Share</span>
+    <svg class="article-header__copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+    </svg>
+    <svg class="article-header__copy-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-dropdown-arrow>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+  
+  
+  <div 
+    class="article-header__copy-dropdown"
+    data-copy-page-dropdown
+    data-state="hidden">
+    <div class="article-header__copy-dropdown-content">
+      
+      <button 
+        class="copy-page-menu-item"
+        data-copy-url="//localhost:1313/docs/prielom/prielom-1/">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+        </svg>
+        Copy URL
+      </button>
+      
+      
+      
+      
+      
+      
+      <a 
+        href="//localhost:1313/docs/prielom/prielom-1/index.txt"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="copy-page-menu-item"
+        data-open-txt>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"></path>
+        </svg>
+        Open LLM text
+      </a>
+      <button 
+        class="copy-page-menu-item"
+        data-copy-txt="//localhost:1313/docs/prielom/prielom-1/index.txt">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+        </svg>
+        Copy LLM text
+      </button>
+
+      
+      <button 
+        class="copy-page-menu-item"
+        data-copy-content>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+        </svg>
+        Copy content
+      </button>
+      
+      <hr class="copy-page-separator">
+      
+      
+      <div class="copy-page-section-header">
+        Share with AI
+      </div>
+      
+      
+      <a 
+        href="https://claude.ai/chat?q=Please%20help%20me%20understand%20this%20documentation%3A%20%2F%2Flocalhost%3A1313%2Fdocs%2Fprielom%2Fprielom-1%2F"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="copy-page-menu-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L2 7v10l10 5 10-5V7l-10-5z"/>
+        </svg>
+        Ask Claude
+      </a>
+      
+      
+      <a 
+        href="https://chat.openai.com/?q=Please%20help%20me%20understand%20this%20documentation%3A%20%2F%2Flocalhost%3A1313%2Fdocs%2Fprielom%2Fprielom-1%2F"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="copy-page-menu-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.888 4.36a5.99 5.99 0 0 0-2.907 6.507 6.018 6.018 0 0 0 .517 4.91 6.05 6.05 0 0 0 6.51 2.9A6.065 6.065 0 0 0 19.376 16.64a5.99 5.99 0 0 0 2.907-6.507l-.001-.312z"/>
+        </svg>
+        Ask ChatGPT
+      </a>
+      
+      
+      <a 
+        href="https://copilot.microsoft.com/?q=Please%20help%20me%20understand%20this%20documentation%3A%20%2F%2Flocalhost%3A1313%2Fdocs%2Fprielom%2Fprielom-1%2F"
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="copy-page-menu-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.5 2C8.9 2 6 4.9 6 8.5c0 1.2.3 2.3.8 3.3L12 21l5.2-9.2c.5-1 .8-2.1.8-3.3C18 4.9 15.1 2 11.5 2z"/>
+        </svg>
+        Ask Copilot
+      </a>
+    </div>
+  </div>
+</div></div>
+  </div>
+
+  <div 
+    id="article-metadata-panel" 
+    class="article-header__metadata-panel"
+    aria-hidden="true"
+    data-metadata-panel><div class="metadata" data-component="article-metadata">
+    <div class="metadata__flow">
+      <div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+          </svg>
+          <time datetime="1998-01-06T00:00:00&#43;01:00">
+            Jan 6, 1998
+          </time>
+        </div><div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+          </svg>
+          <span>hysteria.sk</span>
+        </div><div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+          </svg>
+          <span>9 min read</span>
+        </div><div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clip-rule="evenodd"></path>
+          </svg>
+          <span>1784 words</span>
+        </div><div class="metadata__item metadata__item--secondary">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+          </svg>
+          <span>Updated Oct 13</span>
+        </div></div>
+  </div></div></div>
+  </div>
+  <article class="prose mx-auto max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
+    <header class="mb-6 not-prose">
+        <h1 class="text-3xl font-bold mb-3" style="color: var(--color-text-primary);">.prielom #1</h1></header>
+
+    <div id="articleContent" class="article-content">
+      <div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">text</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465655845000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465655845000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465655845000"><pre tabindex="0"><code>   ::::::::::. :::::::..   :::.,::::::   :::         ...     .        :   
+    `;;;```.;;;;;;;``;;;;  ;;;;;;;&#39;&#39;&#39;&#39;   ;;;      .;;;;;;;.  ;;,.    ;;;  
+     `]]nnn]]&#39;  [[[,/[[[&#39;  [[[ [[cccc    [[[     ,[[     \[[,[[[[, ,[[[[, 
+      $$$&#34;&#34;     $$$$$$c    $$$ $$&#34;&#34;&#34;&#34;    $$&#39;     $$$,     $$$$$$$$$$$&#34;$$$ 
+      888o      888b &#34;88bo,888 888oo,__ o88oo,.__&#34;888,_ _,88P888 Y88&#34; 888o
+      YMMMb     MMMM   &#34;W&#34; MMM &#34;&#34;&#34;&#34;YUMMM&#34;&#34;&#34;&#34;YUMMM  &#34;YMMMMMP&#34; MMM  M&#39;  &#34;MMM
+   
+   prielom #1, 6.1.98, prielom(at)hysteria.sk, http://hysteria.sk/prielom/</code></pre></div>
+</div>
+
+
+
+
+
+<h3 id="intro" class="group block scroll-anchor py-4">
+    intro
+    <a id="prielom-1-intro" href="#prielom-1-intro" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><p>vianocny kapor bol super, ze ? ked som na stedry den tlacil do hlavy vyprazaneho kapra,
+bola este fajn atmoska, ked som sa vsak potom vramci po-vianocnych
+rodinnych navstev musel pozerat na spontanne-slintajucu babicku, sxizoidnu
+tetu a ozraleho stryka a potom
+nastupit po novom roku do roboty, bolo po nalade. prisli dlhe zimne januarove
+vecery a s nimi napad na elektronicky casopis, ktory by nebol nicim podobny
+na neviditelneho psa, netacika, modry svet a pod.. ale ktory by bol tak trochu
+o vsetkom ostatnom. a tak je tu prve cislo e-zinu &ldquo;prielom&rdquo;.. xcel by som aby
+to bol tak zhruba dvojtyzdennik, alebo aspon mesacnik, pravdepodobne to vsak
+bude &ldquo;naladovnik&rdquo;, cize nove cislo prielomu vyjde vzdy ked budem mat fajn naladu a volny cas.
+xcel by som aby prielom prinasal spravy o tej casti internetu, ktoru nepokryvaju
+uz existujuce elektronicke casopisy. pre zaciatok planujem prinasat nejake spravicky
+o computer undergrounde (pokial take nieco existuje), hackeroch, bezpecnosti pocitacovych
+sieti a tak&hellip; xcem sa vyvarovat zbytocnych omaciek
+a radsej podavat polosurove informacie zozbierane z roznych kutikov internetu bez zbytocnych komentarov.. planujem spravit nejake preklady zahranicnych zdrojov.. uz vobec by som
+sa vsak nechcel montovat do nejakych pseudointelektualnych uvah o kyberpunku, kyberpriestore
+a podobnych blbostiach, na to tu predsa mame casopis &ldquo;zivel&rdquo;.
+ako ste si vsimli, neuznavam grafiku, java scripty, animovane gify tlieskajucich ninja-kortynaciek
+a podobne somariny moderneho webu. tiez neuznavam diakritiku, asi preto lebo
+ju moj linuxik nepodporuje. moja nelaska k velkym pismenam prameni z niekolkych
+rokov stravenych na irc, tam sa na take veci zvysoka kasle. dufam ze aj v takejto podobe sa to tu da vcelku zrozumitelne citat..
+pripomienky, otazky, podnety a podobny komunikacny chabrus smerujte na prielom(at)hysteria.sk. vesele citanie</p>
+<blockquote>
+<p>pajka, 28.1., liptovsky mikulas.</p></blockquote>
+
+
+
+
+<h3 id="5-milionov-hacknutych-zo-slovenskej-sporitelne" class="group block scroll-anchor py-4">
+    5 milionov hacknutych zo slovenskej sporitelne
+    <a id="prielom-1-5-milionov-hacknutych-zo-slovenskej-sporitelne" href="#prielom-1-5-milionov-hacknutych-zo-slovenskej-sporitelne" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><p>do pocitacovej siete slovenskej sporitelne vstupil 14. januara 29-rocny
+haqer z trnavy a z vnutrobankoveho uctu v kosiciach si
+pretransferoval 5 melonov. peniaze si previedol na svoj vlastny ucet
+do trnavy.. to bol zjavne ten kamen urazu.. na druhy den si to prehodil na
+svoj ucet do tatrabanky. potom sa rozbehol vybrat si peniaze v hotovosti, ale
+samozrejme uz na neho cakala policia a zadrzala ho pekne v banke. momentalne
+sa nachadza vo vysetrovacej vazbe.</p>
+
+
+
+
+<h3 id="cina-zverejnila-zbierku-zakonov-urcenych-na-cenzuru-internetu" class="group block scroll-anchor py-4">
+    cina zverejnila zbierku zakonov urcenych na cenzuru internetu
+    <a id="prielom-1-cina-zverejnila-zbierku-zakonov-urcenych-na-cenzuru-internetu" href="#prielom-1-cina-zverejnila-zbierku-zakonov-urcenych-na-cenzuru-internetu" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><p>30. decembra 1997 zverejnilo ministerstvo vnutra ciny novu vyhlasku o
+&ldquo;regulacii bezpecnosti a manazmentu pocitacovych informacnych sieti a
+internetu&rdquo;. nemyslim si ze by Cina zmenila nejak radikalne svoj postoj
+k internetu, skor islo o to, ze sa skupinka komunistickych internet-analfabetov
+pokusila napisat zbierku pravidiel a zakonov ktore by dokazali rozskatulkovat
+obrovske mnozstvo informacii na internete a vyradit vsetko &ldquo;nevhodne&rdquo;.
+plne znenie originalu a aj anglickeho prekladu tychto zakonov je zverejneny
+kdesi na internete. medzi najabsurdnejsie patria :</p>
+<ul>
+<li>
+<p>je zakazane prostrednictvom internetu tvorit klamstva alebo menit pravdu, rozsirovat klebety,
+narusovat poriadok v spolocnosti. (paragraf 5, odsek 5)</p>
+</li>
+<li>
+<p>je zakazane prostrednictvom internetu propagovat feudalne nazory, sexualne sugestivny material,
+hazardne hry, nasilie, vrazdy (paragraf 5, odsek 6)</p>
+</li>
+<li>
+<p>je zakazane prostrednictvom internetu poskodzovat povest statnych organov (paragraf 5, odsek 8)</p>
+</li>
+</ul>
+<p>jeden z paragrafov tiez zakazuje usilovat sa o &ldquo;rozdelenie krajiny&rdquo;, cim cina
+priamo atakuje separatisticke hnutia v Tibete a Xinjiangu. cina tiez priamo
+blokuje domace stranky vacsiny cinskych dissidentov, ktori pouzivaju internet
+na politicky boj a na svojich www strankach kritizuju cinsku vladu.</p>
+<p>nova zbierka zakonov je tiez urcena na filtrovanie pocitacovej kriminality,
+hackovania, virusov a podobne. Ako trest za tento druh kriminality uviedli blizsie nespecifikovane
+&ldquo;kriminalne tresty&rdquo; a financne pokuty do 15,000 juanov (priblizbe 65 000 Sk).</p>
+
+
+
+
+<h3 id="czert-session-v-prahe" class="group block scroll-anchor py-4">
+    cZert session v prahe
+    <a id="prielom-1-czert-session-v-prahe" href="#prielom-1-czert-session-v-prahe" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><p>v sobotu 17.1. sa uskutocnila cZert session v prahe. bolo tam asi zo
+dvadsat-tridsat haqerozov, kyberadminov, lameroidov a aj zopar ludi.. ja vlastne ani presne
+neviem kto tam vsetko bol, ale ak to xcete vediet - spytajte sa policie
+ceskej republiky. perlickou celej
+akcie totiz  bol zasah policie, ktory zacal tym, ze na vaclavaku pred konom
+postavali dvaja prudko nenapadni
+pani a natacali celu session na kameru. ked na nich par ludi od cZertu
+ukazalo prstom, hned trhli
+kamerou a zacali natacat vchod do metra&hellip; neskor sa cela session presunula
+do istej restauracie v
+centre prahy. tam po hodinke veselej konverzacie vtrhlo sest policajtov a
+vyzvali vsetkych pritomnych aby sa legitimovali. nase protestne otazky
+odbavili imho dost trapnu vyhovorku, zevraj dostali informaciu ze sa v tej
+restauracii nachadza &ldquo;pachatel loupezniho prepadeni&rdquo;. na otazky ohladne
+popisu tohoto pachatela odpovedali ze &ldquo;kazdy z tady pritomnych by
+zodpovedel tomu popisu&rdquo;. no a tak si opisali udaje z nasich dokladov a
+odficali prec. seteuid dokonca tvrdil na mamedii ze zistil ze sa v tej
+restauracii nachadzali aj traja slimaci, t.j. undercover fizli.. je mi
+ich dost luto, lebo museli chudaci cely vecer pocuvat a este nedajboze
+aj zapisovat nasu unixacko-kompjuteroidnu konverzaciu.</p>
+<p>o tom, ze policia ceskej republiky teda konecne odhalila cZerta teda uz
+nie je ziadnych pochyb. koniec-koncov aj pan policajny kapitan jiri dastych
+oznamil na tlacovke v brne ze uz je cZertovi na stope a ze je iba otazka
+casu kedy ho strci za mreze. teraz ked uz policia pozna haqerozov uz
+zostava policajstkemu zboru iba zistit kde je to ten &ldquo;internet&rdquo;, co je to
+ten &ldquo;unix&rdquo;, ake zariadenie je to vlastne ten &ldquo;server&rdquo;. pravdepodobne na
+zistenie tychto informacii sluzila sobotnajsia policajna akcia.</p>
+
+
+
+
+<h3 id="unicef-hacked" class="group block scroll-anchor py-4">
+    unicef hacked
+    <a id="prielom-1-unicef-hacked" href="#prielom-1-unicef-hacked" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><p>7. januara hackla skupina hackerov pod nalepkou DAMM (Drunkz Against Madd
+Mothers) domacu stranku organizacie unicef. hackeri zmenili html
+fajly a vyvesili tam vystrahu ze spravia z internetu &ldquo;holocaust&rdquo;, ak nebude prepusteny kevin
+mitnick. kevin mitnick - znamy emericky hacker, pravda, stale sedi vo federalnom vezeni za par veci
+suvisiacich s behanim po serveroch. DAMM odovodnil hacknutie unicefu tym,
+ze &ldquo;kevin mitnick je vlastne iba velke decko, a unicef je tu prave na to aby
+ochranoval decka&rdquo;. dalej tam uviedli ze ak do 20. februara neprepustia
+kevina mitnicka z lapaku, kazdy den podhodia 100 deti dvadsat vyhladovelym
+super-modelkam. zo zdroju blizkeho irc som sa dozvedel ze je to ta ista
+parta hackerov ktora na par minut hackla yahoo. o tom hacku
+na <a href="https://www.yahoo.com">www.yahoo.com</a> sa hovorilo zevraj sa tam umiestnil nejaky virus ktori si
+vsetci navstevnici stiahli. ten virus mal niekedy koncom januara &lsquo;98
+znicit cely internet. bol to samozrejme dost nevydareny zartik, ale ked
+si k nemu primyslime tupu ignorantsku nevedomost o svete pocitacov, v
+ktorom vacsina novinarov zije, vznikol z toho skandal ktory niekolko tyzdnov
+zivoril na titulnych strankach mnohych novin.</p>
+<p>unicef ma tiez stranky aj v cechah a na slovensku. v cechach je to u inet
+providera lanprojekt, o ktorom je uz asi dost zname ze tam cZert
+obcas robi kabaret. asi uz nie je velke tajomstvo ze sa na <a href="https://www.unicef.cz">www.unicef.cz</a>
+nachadza 5002 cZert backdoor, akurat sa zjavne caka na niekoho kto by spravil
+html fajly.</p>
+
+
+
+
+<h3 id="kriminalista-chyta-darebaky-pocitacem" class="group block scroll-anchor py-4">
+    kriminalista chyta darebaky pocitacem
+    <a id="prielom-1-kriminalista-chyta-darebaky-pocitacem" href="#prielom-1-kriminalista-chyta-darebaky-pocitacem" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><p>kdyz chce kapitan jiri dastych z prazske kriminalky chytit nejakeho
+lotra, tak si nenazuje pohodlne boty ani si nevezme do kapsy lupu. usedne k
+pocitaci. jeho praci je totiz stihani pocitacovych piratu. &ldquo;je to prace jako
+kazda jina, nic atraktivniho na ni nevidim,&rdquo; rika muz, ktery sam sebe oznacuje
+za jedineho predstavitele softwarove policie v zemi. kazdy den useda v
+kancelari ke svemu soukromemu pocitaci s postarsim procesorem 486, ktery by
+byl tem, po nichz patra, nejspis pro smich. &ldquo;ne, policejni pocitac nemam.
+donesl jsem si do prace svuj vlastni, abych mel na cem delat,&rdquo; prozrazuje
+stripek ze zakulisi boje s pocitacovou kriminalitou dastych. &ldquo;mame vyhodu, ze
+pocitacova kriminalita je pomerne mlada a zlocinci pred nami nemaji takovy
+naskok. o krok pozadu za nimi ale budeme porad,&rdquo; tvrdi kriminalista. presto
+podle neho nema vyznam zakladat pro boj s pocitacovou kriminalitou specialni
+utvar, spis mu jde o rozjeti systemu, v nemz by bezni policiste chytali
+pocitacove piraty stejne samozrejme jako zlodeje z kocarkarny. &ldquo;zakladat
+specialni oddeleni by bylo uplne zbytecne. sit distributoru ilegalniho softwaru u
+nas neni nijak rozsahla. vetsinou jde jen o dva tri nadsence, z nichz jeden ma
+treba pres internet pristup k softwaru a ostatni kopiruji diskety a cedecka,
+ktera dal prodavaji bud na burzach, nebo na inzerat,&rdquo; vysvetluje dastych.
+podle neho neni problem dostat na jeden cd-rom nelegalni software za milion
+korun. pak ovsem muze jit pachatel za jedine piratske cedecko do vezeni az na
+pet let.  jak vypada bezne vybaveni pocitacoveho pirata, si mohli prohlednout
+navstevnici na veletrhu invex ve stanku policie a ministerstva vnitra. v
+prosklenych vitrinach zde byly k videni pocitace, katalogy, hory cd-rom,
+disket a tvare odhalenych piratu prelepene cernou paskou. &ldquo;byl to muj napad,&rdquo;
+priznava pysne kriminalista. &ldquo;aby si navstevnici uvedomili, ze pocitacovi pirati
+jsou lide z masa a krve. ze se jim muze stat kazdy, kdo si nelegalne zkopiruje
+od kamarada disketu,&rdquo; vysvetluje svuj zamer. krome pocitacovych piratu se
+kapitan dastych pidi i po takzvanych hackerech, kteri se na internetu
+pokouseji probourat na nepovolena mista. nekdy se jim to povede, jako letos
+na jare hackerovi, ktery se oznacuje jako czert. ten se dostal na webovske
+stranky nekolika ministerstev a ty pak neuctive pozmenil.
+&ldquo;czert ted zalezl, chytit ho muzeme, az zas neco provede,&rdquo; konstatuje dastych.
+je presvedcen, ze czert neni jeden clovek, ale parta mladych lidi, kteri bydli v
+hlavnim meste. &ldquo;hackeri jsou takovi pocitacovi exhibicionisti. predpokladam,
+ze az je chytneme, budou pysni na to, jak nam zamotali hlavy,&rdquo; uvazuje jediny
+softwarovy policista v zemi. (zdroj : daniel zasmeta, mf dnes)</p>
+
+
+
+
+<h3 id="strelny-prach-cerny-prach" class="group block scroll-anchor py-4">
+    Strelny prach  (Cerny prach)
+    <a id="prielom-1-strelny-prach-cerny-prach" href="#prielom-1-strelny-prach-cerny-prach" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><p>Strelny prach je takovej zakladni pyromanskej artefakt hned po
+sirkach
+a granatech. Je to asi nejstarsi vybusnina na svete, ktera se pouziva
+dodnes. Sama o sobe samozrejme nevybuchuje. Sama o sobe pouze prudce
+hori a produkuje spoustu dymu. K tomu, aby strelny prach vyvolala
+detonaci potrebujete nejakou pevnou krabicku nebo uzavrenou trubku nebo
+cokoliv pevneho do ceho ho nasypete. Tim tlakem ktery vyvine nastane
+vybuch. A nebo se muzete pouzit jako palivo do raketoveho
+motoru, ale ten s popiseme az v neterem pristim dile.</p>
+<p>   A nini pristupme k vyrobe, strelneho prachu. Ta je celkem snadna
+potrebujete pouze : Drevene uhli, KNO3 - Dusicnan Draselny (Da se
+bezne sehnat v drogerii, jelikoz se  pouziva jako hnojivo a na
+konzervaci masa) a Siru.
+Kazda z latek se dukladne rozemele a rozetre v treci misce na jemny
+prasek a pote se smisi s ostatnimy.
+V tomto pomeru :</p>
+<ul>
+<li>KNO3 (Dusicnan draselny)   &hellip; 75%</li>
+<li>Sira                       &hellip; 10%</li>
+<li>Drevene uhli               &hellip; 15%</li>
+</ul>
+<p>Dokonale se promycha. A tim vznikne obycejny strelny prach.
+Pokud chcete aby horlavost byla jeste lepsi tak ho zkuste namocit a
+potom ususit. Znovu peclive rozetrit a rozemlyt to muzete nekolikrat
+zopakovat. Tim vznikne opravdu dokonale horlavy strelny prach.
+<a href="mailto:mmoozzeekk%28at%29hotmail.com">Mozek</a></p>
+
+    </div><footer class="mt-6 pt-5 border-t not-prose">
+        <div class="flex flex-wrap gap-2"><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              grsec
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              kernel
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              DoS
+            </span></div>
+      </footer></article>
+
+  <div class="p-4">
+    
+  </div>
+</div>
+    </div><div class="hidden xl:block">
+<aside id="sidebar-right" class="sticky top-16 hidden xl:block h-[calc(100vh-4rem)] overflow-y-auto pr-2" data-component="navigation-sidebar-right" role="complementary" aria-label="On-page navigation">
+  
+  
+</aside>
+</div></main>
+  <footer>
+
+
+
+</footer>
+  
+  
+
+</body>
+</html>
