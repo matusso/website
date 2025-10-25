@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "icon": {
+      "type": "simple-icons",
+      "name": "github"
+    },
+    "text": "Github",
+    "link": "https://github.com/matusso"
+  },
+  {
+    "id": 2,
+    "icon": {
+      "type": "simple-icons",
+      "name": "mastodon"
+    },
+    "text": "Mastodon",
+    "link": "https://mastodon.social/@burso"
+  },
+  {
+    "id": 3,
+    "icon": {
+      "type": "simple-icons",
+      "name": "x"
+    },
+    "text": "Twitter",
+    "link": "https://x.com/BursaMatus"
+  },
+  {
+    "id": 4,
+    "icon": {
+      "type": "simple-icons",
+      "name": "discord"
+    },
+    "text": "Discord",
+    "link": "https://discord.gg/7ZfXJk3b3"
+  },
+  {
+    "id": 10,
+    "icon": {
+      "type": "simple-icons",
+      "name": "hackthebox"
+    },
+    "text": "HackTheBox",
+    "link": "https://app.hackthebox.com/profile/234602"
+  },
+  {
+    "id": 11,
+    "icon": {
+      "type": "simple-icons",
+      "name": "tryhackme"
+    },
+    "text": "TryHackMe",
+    "link": "https://tryhackme.com/p/burso"
+  },
+  {
+    "id": 12,
+    "icon": {
+      "type": "simple-icons",
+      "name": "hackerone"
+    },
+    "text": "HackerOne",
+    "link": "https://hackerone.com/burso"
+  }
+]

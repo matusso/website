@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>F1 on .burso | blog about ctf &amp; anything else</title>
+    <link>//localhost:1313/categories/f1/</link>
+    <description>Recent content in F1 on .burso | blog about ctf &amp; anything else</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 13 Oct 2025 12:20:35 +0200</lastBuildDate>
+    <atom:link href="//localhost:1313/categories/f1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to fix Formula1 or how to make F1 even more exciting sport.</title>
+      <link>//localhost:1313/docs/f1/how-to-fix-f1/</link>
+      <pubDate>Fri, 02 Jun 2023 16:25:43 +0100</pubDate>
+      <guid>//localhost:1313/docs/f1/how-to-fix-f1/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;//localhost:1313/img/f1.jpg&#34; alt=&#34;f1&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;I have one idea on how to fix Formula 1. If we want racing to be more fair, we should have the same cars for every driver.&lt;/p&gt;&#xA;&lt;p&gt;So, the idea is that drivers&amp;rsquo; points will be counted as they are now, with a certain amount of points awarded for each race and position.&#xA;However, the constructor championship will not be calculated as the sum of drivers&amp;rsquo; points in the same team.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
