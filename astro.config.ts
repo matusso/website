@@ -23,7 +23,7 @@ const {
 
 // https://astro.build/config
 const config = defineConfig({
-  site: 'https://www.burso.eu',
+  site: 'https://burso.eu',
   output: 'static',
   integrations: [
     expressiveCode({
