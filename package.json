@@ -22,7 +22,8 @@
     "astro": "^5.14.3",
     "astro-expressive-code": "^0.38.3",
     "reveal.js": "^5.2.1",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "astro-embed": "^0.9.1"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
