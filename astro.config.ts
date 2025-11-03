@@ -6,8 +6,9 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import spectre from './package/src';
 
-import node from '@astrojs/node';
+import node from '@astrojs/node'
 import { spectreDark } from './src/ec-theme';
+
 
 const {
   GISCUS_REPO,
