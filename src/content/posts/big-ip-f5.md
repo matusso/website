@@ -5,7 +5,7 @@ tags: ["F5", "CVE-2022-1388", "BIG-IP", "REST", "API"]
 categories: ["vulns"]
 createdAt: 2022-05-09T16:42:00+01:00
 description: "Discovered F5 BIG-IP iControl REST vulnerability CVE-2022-1388 before it was published."
-image: "../assets/spectre.png"
+image: "../assets/f5-black.jpg"
 ---
 
 Good afternoon to every security researcher. I would like to share my experience of finding announced vulnerability by internal F5 security team and writing the exploit for [CVE-2022-1388](https://support.f5.com/csp/article/K23605346).
