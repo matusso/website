@@ -24,7 +24,7 @@ const config = defineConfig({
       openGraph: {
         home: {
           title: '.burso.eu',
-          description: 'A minimalistic theme for Astro.'
+          description: 'A blog about my work and personal life.'
         },
         blog: {
           title: 'Blog',
