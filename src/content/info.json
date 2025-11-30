@@ -3,17 +3,16 @@
     "id": 1,
     "icon": {
       "type": "lucide",
-      "name": "cake"
+      "name": "coffee"
     },
-    "text": "1 year old"
+    "text": "14 years in IT"
   },
   {
     "id": 2,
     "icon": {
       "type": "lucide",
-      "name": "earth"
+      "name": "shield-check"
     },
-    "type": "lucide",
-    "text": "localhost"
+    "text": "CCNA, Cisco Ethical Hacker"
   }
 ]
